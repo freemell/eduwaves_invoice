@@ -1,0 +1,94 @@
+book_code,title,grade,price,subject,search_terms
+GEN/P1/HALE,HAPPY LEARNERS MATHS BK 1,Primary 1,2300.0,📐 Mathematics,happy learners maths bk 1 primary 1 📐 mathematics
+GEN/P2/HALE,HAPPY LEARNERS MATHS BK 2,Primary 2,2300.0,📐 Mathematics,happy learners maths bk 2 primary 2 📐 mathematics
+GEN/P3/HALE,HAPPY LEARNERS MATHS BK 3,Primary 3,2300.0,📐 Mathematics,happy learners maths bk 3 primary 3 📐 mathematics
+GEN/P1/PRDI,PRY DIGITAL MATHS BK 1,Primary 1,4200.0,📐 Mathematics,pry digital maths bk 1 primary 1 📐 mathematics
+GEN/P2/PRDI,PRY DIGITAL MATHS BK 2,Primary 2,4200.0,📐 Mathematics,pry digital maths bk 2 primary 2 📐 mathematics
+GEN/P3/PRDI,PRY DIGITAL MATHS BK 3,Primary 3,4200.0,📐 Mathematics,pry digital maths bk 3 primary 3 📐 mathematics
+GEN/P4/PRDI,PRY DIGITAL MATHS BK 4,Primary 4,4200.0,📐 Mathematics,pry digital maths bk 4 primary 4 📐 mathematics
+GEN/P5/PRDI,PRY DIGITAL MATHS BK 5,Primary 5,4200.0,📐 Mathematics,pry digital maths bk 5 primary 5 📐 mathematics
+GEN/P6/PRDI,PRY DIGITAL MATHS BK 6,Primary 6,4200.0,📐 Mathematics,pry digital maths bk 6 primary 6 📐 mathematics
+GEN/P1/HALE,HAPPY LEARNERS ENG BK 1,Primary 1,2300.0,📖 English Language,happy learners eng bk 1 primary 1 📖 english language
+GEN/P2/HALE,HAPPY LEARNERS ENG BK 2,Primary 2,2300.0,📖 English Language,happy learners eng bk 2 primary 2 📖 english language
+GEN/P3/HALE,HAPPY LEARNERS ENG. BK 3,Primary 3,2300.0,📖 English Language,happy learners eng. bk 3 primary 3 📖 english language
+GEN/P1/PRPR,PRY PROPER ENG BK 1,Primary 1,4300.0,📖 English Language,pry proper eng bk 1 primary 1 📖 english language
+GEN/P2/PRPR,PRY PROPER ENG BK 2,Primary 2,4300.0,📖 English Language,pry proper eng bk 2 primary 2 📖 english language
+GEN/P3/PRPR,PRY PROPER ENG BK 3,Primary 3,4300.0,📖 English Language,pry proper eng bk 3 primary 3 📖 english language
+GEN/P4/PRPR,PRY PROPER ENG BK 4,Primary 4,4300.0,📖 English Language,pry proper eng bk 4 primary 4 📖 english language
+GEN/P5/PRPR,PRY PROPER ENG BK 5,Primary 5,4300.0,📖 English Language,pry proper eng bk 5 primary 5 📖 english language
+GEN/P6/PRPR,PRY PROPER ENG BK 6,Primary 6,4300.0,📖 English Language,pry proper eng bk 6 primary 6 📖 english language
+GEN/P1/PRBA,PRY BASIC SCIENCE & TECH. BK 1,Primary 1,2550.0,🔬 Basic Science & Technology,pry basic science & tech. bk 1 primary 1 🔬 basic science & technology
+GEN/P2/PRBA,PRY BASIC SCIENCE & TECH. BK 2,Primary 2,2550.0,🔬 Basic Science & Technology,pry basic science & tech. bk 2 primary 2 🔬 basic science & technology
+GEN/P3/PRBA,PRY BASIC SCIENCE & TECH. BK 3,Primary 3,2550.0,🔬 Basic Science & Technology,pry basic science & tech. bk 3 primary 3 🔬 basic science & technology
+GEN/P4/PRBA,PRY BASIC SCIENCE & TECH. BK 4,Primary 4,2550.0,🔬 Basic Science & Technology,pry basic science & tech. bk 4 primary 4 🔬 basic science & technology
+GEN/P5/PRBA,PRY BASIC SCIENCE & TECH. BK 5,Primary 5,2550.0,🔬 Basic Science & Technology,pry basic science & tech. bk 5 primary 5 🔬 basic science & technology
+GEN/P6/PRBA,PRY BASIC SCIENCE & TECH. BK 6,Primary 6,2550.0,🔬 Basic Science & Technology,pry basic science & tech. bk 6 primary 6 🔬 basic science & technology
+GEN/P1/HALE,HAPPY LEARNERS COMPUTER BOOK 1,Primary 1,2300.0,💻 Computer Studies,happy learners computer book 1 primary 1 💻 computer studies
+GEN/P2/HALE,HAPPY LEARNERS COMPUTER BOOK 2,Primary 2,2300.0,💻 Computer Studies,happy learners computer book 2 primary 2 💻 computer studies
+GEN/P3/HALE,HAPPY LEARNERS COMPUTER BOOK 3,Primary 3,2300.0,💻 Computer Studies,happy learners computer book 3 primary 3 💻 computer studies
+GEN/P1/PRCO,PRY COMPUTER BK 1,Primary 1,2300.0,💻 Computer Studies,pry computer bk 1 primary 1 💻 computer studies
+GEN/P2/PRCO,PRY COMPUTER BK 2,Primary 2,2300.0,💻 Computer Studies,pry computer bk 2 primary 2 💻 computer studies
+GEN/P3/PRCO,PRY COMPUTER BK 3,Primary 3,2300.0,💻 Computer Studies,pry computer bk 3 primary 3 💻 computer studies
+GEN/P4/PRCO,PRY COMPUTER BK 4,Primary 4,2300.0,💻 Computer Studies,pry computer bk 4 primary 4 💻 computer studies
+GEN/P5/PRCO,PRY COMPUTER BK 5,Primary 5,2300.0,💻 Computer Studies,pry computer bk 5 primary 5 💻 computer studies
+GEN/P6/PRCO,PRY COMPUTER BK 6,Primary 6,2300.0,💻 Computer Studies,pry computer bk 6 primary 6 💻 computer studies
+GEN/P1/PRNA,PRY NATIONAL VALUE EDUCATION PRY. BK 1,Primary 1,2500.0,🏛️ National Values Education,pry national value education pry. bk 1 primary 1 🏛️ national values education
+GEN/P2/PRNA,PRY NATIONAL VALUE EDUCATION PRY. BK 2,Primary 2,2500.0,🏛️ National Values Education,pry national value education pry. bk 2 primary 2 🏛️ national values education
+GEN/P3/PRNA,PRY NATIONAL VALUE EDUCATION PRY. BK 3,Primary 3,2500.0,🏛️ National Values Education,pry national value education pry. bk 3 primary 3 🏛️ national values education
+GEN/P4/PRNA,PRY NATIONAL VALUE EDUCATION PRY. BK 4,Primary 4,2500.0,🏛️ National Values Education,pry national value education pry. bk 4 primary 4 🏛️ national values education
+GEN/P5/PRNA,PRY NATIONAL VALUE EDUCATION PRY. BK 5,Primary 5,2500.0,🏛️ National Values Education,pry national value education pry. bk 5 primary 5 🏛️ national values education
+GEN/P6/PRNA,PRY NATIONAL VALUE EDUCATION PRY. BK 6,Primary 6,2500.0,🏛️ National Values Education,pry national value education pry. bk 6 primary 6 🏛️ national values education
+GEN/P1/PRHI,PRY HISTORY BK 1,Primary 1,2150.0,📚 History,pry history bk 1 primary 1 📚 history
+GEN/P2/PRHI,PRY HISTORY BK 2,Primary 2,2150.0,📚 History,pry history bk 2 primary 2 📚 history
+GEN/P3/PRHI,PRY HISTORY BK 3,Primary 3,2150.0,📚 History,pry history bk 3 primary 3 📚 history
+GEN/P4/PRHI,PRY HISTORY BK 4,Primary 4,2150.0,📚 History,pry history bk 4 primary 4 📚 history
+GEN/P5/PRHI,PRY HISTORY BK 5,Primary 5,2150.0,📚 History,pry history bk 5 primary 5 📚 history
+GEN/P6/PRHI,PRY HISTORY BOOK 6,Primary 6,2150.0,📚 History,pry history book 6 primary 6 📚 history
+GEN/P1/HALE,HAPPY LEARNERS QUANTITATIVE APTITUDE BOOK 1,Primary 1,2100.0,🧮 Quantitative Reasoning,happy learners quantitative aptitude book 1 primary 1 🧮 quantitative reasoning
+GEN/P2/HALE,HAPPY LEARNERS QUANTITATIVE APTITUDE BOOK 2,Primary 2,2100.0,🧮 Quantitative Reasoning,happy learners quantitative aptitude book 2 primary 2 🧮 quantitative reasoning
+GEN/P3/HALE,HAPPY LEARNERS QUANTITATIVE APTITUDE BOOK 3,Primary 3,2100.0,🧮 Quantitative Reasoning,happy learners quantitative aptitude book 3 primary 3 🧮 quantitative reasoning
+GEN/P1/PRQU,PRY QUANTITATIVE REASONING BK 1,Primary 1,2150.0,🧮 Quantitative Reasoning,pry quantitative reasoning bk 1 primary 1 🧮 quantitative reasoning
+GEN/P2/PRQU,PRY QUANTITATIVE REASONING BK 2,Primary 2,2150.0,🧮 Quantitative Reasoning,pry quantitative reasoning bk 2 primary 2 🧮 quantitative reasoning
+GEN/P3/PRQU,PRY QUANTITATIVE REASONING BK 3,Primary 3,2150.0,🧮 Quantitative Reasoning,pry quantitative reasoning bk 3 primary 3 🧮 quantitative reasoning
+GEN/P4/PRQU,PRY QUANTITATIVE REASONING BK 4,Primary 4,2150.0,🧮 Quantitative Reasoning,pry quantitative reasoning bk 4 primary 4 🧮 quantitative reasoning
+GEN/P5/PRQU,PRY QUANTITATIVE REASONING BK 5,Primary 5,2150.0,🧮 Quantitative Reasoning,pry quantitative reasoning bk 5 primary 5 🧮 quantitative reasoning
+GEN/P6/PRQU,PRY QUANTITATIVE REASONING BK 6,Primary 6,2150.0,🧮 Quantitative Reasoning,pry quantitative reasoning bk 6 primary 6 🧮 quantitative reasoning
+GEN/P1/HALE,HAPPY LEARNERS VERBAL APTITUDE BOOK 1,Primary 1,2100.0,🗣️ Verbal Reasoning,happy learners verbal aptitude book 1 primary 1 🗣️ verbal reasoning
+GEN/P2/HALE,HAPPY LEARNERS VERBAL APTITUDE BOOK 2,Primary 2,2100.0,🗣️ Verbal Reasoning,happy learners verbal aptitude book 2 primary 2 🗣️ verbal reasoning
+GEN/P3/HALE,HAPPY LEARNERS VERBAL APTITUDE BOOK 3,Primary 3,2100.0,🗣️ Verbal Reasoning,happy learners verbal aptitude book 3 primary 3 🗣️ verbal reasoning
+GEN/P1/PRVE,PRY VERBAL REASONING BK 1,Primary 1,2150.0,🗣️ Verbal Reasoning,pry verbal reasoning bk 1 primary 1 🗣️ verbal reasoning
+GEN/P2/PRVE,PRY VERBAL REASONING BK 2,Primary 2,2150.0,🗣️ Verbal Reasoning,pry verbal reasoning bk 2 primary 2 🗣️ verbal reasoning
+GEN/P3/PRVE,PRY VERBAL REASONING BK 3,Primary 3,2150.0,🗣️ Verbal Reasoning,pry verbal reasoning bk 3 primary 3 🗣️ verbal reasoning
+GEN/P4/PRVE,PRY VERBAL REASONING BK 4,Primary 4,2150.0,🗣️ Verbal Reasoning,pry verbal reasoning bk 4 primary 4 🗣️ verbal reasoning
+GEN/P5/PRVE,PRY VERBAL REASONING BK 5,Primary 5,2150.0,🗣️ Verbal Reasoning,pry verbal reasoning bk 5 primary 5 🗣️ verbal reasoning
+GEN/P6/PRVE,PRY VERBAL REASONING BK 6,Primary 6,2150.0,🗣️ Verbal Reasoning,pry verbal reasoning bk 6 primary 6 🗣️ verbal reasoning
+GEN/P1/HALE,HAPPY LEARNERS SKILLFUL WRITING BOOK 1,Primary 1,2100.0,✍️ Writing Skills,happy learners skillful writing book 1 primary 1 ✍️ writing skills
+GEN/P2/HALE,HAPPY LEARNERS SKILLFUL WRITING BOOK 2,Primary 2,2100.0,✍️ Writing Skills,happy learners skillful writing book 2 primary 2 ✍️ writing skills
+GEN/P3/HALE,HAPPY LEARNERS SKILLFUL WRITING BOOK 3,Primary 3,2100.0,✍️ Writing Skills,happy learners skillful writing book 3 primary 3 ✍️ writing skills
+GEN/P1/HALE,HAPPY LEARNERS HEALTH HABITS BK 1,Primary 1,2300.0,🏥 Health Education,happy learners health habits bk 1 primary 1 🏥 health education
+GEN/P2/HALE,HAPPY LEARNERS HEALTH HABITS BK 2,Primary 2,2300.0,🏥 Health Education,happy learners health habits bk 2 primary 2 🏥 health education
+GEN/P3/HALE,HAPPY LEARNERS HEALTH HABITS BOOK 3,Primary 3,2300.0,🏥 Health Education,happy learners health habits book 3 primary 3 🏥 health education
+GEN/P1/HALE,HAPPY LEARNERS SOCIAL HABITS BK 1,Primary 1,2300.0,🌍 Social Studies,happy learners social habits bk 1 primary 1 🌍 social studies
+GEN/P2/HALE,HAPPY LEARNERS SOCIAL HABITS BK 2,Primary 2,2300.0,🌍 Social Studies,happy learners social habits bk 2 primary 2 🌍 social studies
+GEN/P3/HALE,HAPPY LEARNERS SOCIAL HABITS BK 3,Primary 3,2300.0,🌍 Social Studies,happy learners social habits bk 3 primary 3 🌍 social studies
+GEN/J1/JSIM,JSS IMPECCABLE ENGLISH BK 1,JSS 1,4400.0,📖 English Language,jss impeccable english bk 1 jss 1 📖 english language
+GEN/J2/JSIM,JSS IMPECCABLE ENGLISH BK 2,JSS 2,4400.0,📖 English Language,jss impeccable english bk 2 jss 2 📖 english language
+GEN/J3/JSIM,JSS IMPECCABLE ENGLISH BK 3,JSS 3,4400.0,📖 English Language,jss impeccable english bk 3 jss 3 📖 english language
+GEN/J1/JSMA,JSS MATHEMATICS BK 1,JSS 1,4400.0,📐 Mathematics,jss mathematics bk 1 jss 1 📐 mathematics
+GEN/J2/JSMA,JSS MATHEMATICS BK 2,JSS 2,4400.0,📐 Mathematics,jss mathematics bk 2 jss 2 📐 mathematics
+GEN/J3/JSMA,JSS MATHEMATICS BK 3,JSS 3,4400.0,📐 Mathematics,jss mathematics bk 3 jss 3 📐 mathematics
+GEN/J1/JSBA,JSS BASIC SCI. & TECH BK 1,JSS 1,3000.0,🔬 Basic Science & Technology,jss basic sci. & tech bk 1 jss 1 🔬 basic science & technology
+GEN/J2/JSBA,JSS BASIC SCI. & TECH BK 2,JSS 2,3000.0,🔬 Basic Science & Technology,jss basic sci. & tech bk 2 jss 2 🔬 basic science & technology
+GEN/J3/JSBA,JSS BASIC SCI. & TECH BK 3,JSS 3,3000.0,🔬 Basic Science & Technology,jss basic sci. & tech bk 3 jss 3 🔬 basic science & technology
+GEN/J1/JSNA,JSS NATIONAL VALUES EDUCATION BK 1,JSS 1,3050.0,🏛️ National Values Education,jss national values education bk 1 jss 1 🏛️ national values education
+GEN/J2/JSNA,JSS NATIONAL VALUES EDUCATION BK 2,JSS 2,3050.0,🏛️ National Values Education,jss national values education bk 2 jss 2 🏛️ national values education
+GEN/J3/JSNA,JSS NATIONAL VALUES EDUCATION BK 3,JSS 3,3050.0,🏛️ National Values Education,jss national values education bk 3 jss 3 🏛️ national values education
+GEN/J1/JSHI,JSS HISTORY BK 1,JSS 1,3000.0,📚 History,jss history bk 1 jss 1 📚 history
+GEN/J2/JSHI,JSS HISTORY BK 2,JSS 2,3000.0,📚 History,jss history bk 2 jss 2 📚 history
+GEN/J3/JSHI,JSS HISTORY BK 3,JSS 3,3000.0,📚 History,jss history bk 3 jss 3 📚 history
+GEN/PPrimary/TAFO,TANGIYKA FOREST & STRANGE VIRUS,Primary,1500.0,📖 Primary Literature,tangiyka forest & strange virus primary 📖 primary literature
+GEN/PPrimary/MITO,THE MISSING TOY,Primary,1500.0,📖 Primary Literature,the missing toy primary 📖 primary literature
+GEN/PPrimary/RE,THE REWARD,Primary,1500.0,📖 Primary Literature,the reward primary 📖 primary literature
+GEN/PPrimary/NECL,A NEW CLASS,Primary,1500.0,📖 Primary Literature,a new class primary 📖 primary literature
+GEN/PPrimary/HOKI,HOPPY THE KIND FROG,Primary,1500.0,📖 Primary Literature,hoppy the kind frog primary 📖 primary literature
+GEN/PPrimary/PRWH,PRACTICE WHAT YOU PREACH,Primary,1800.0,📖 Primary Literature,practice what you preach primary 📖 primary literature

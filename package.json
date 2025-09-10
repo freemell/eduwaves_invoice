@@ -1,0 +1,23 @@
+{
+  "name": "eduwaves-invoice-generator",
+  "version": "1.0.0",
+  "description": "Professional invoice generation system for EDUwaves Publishers Limited",
+  "main": "app.py",
+  "scripts": {
+    "dev": "python app.py",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "invoice",
+    "pdf",
+    "education",
+    "books",
+    "flask",
+    "python"
+  ],
+  "author": "EDUwaves Publishers Limited",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

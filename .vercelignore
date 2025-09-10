@@ -1,0 +1,40 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git
+.mypy_cache
+.pytest_cache
+.hypothesis
+
+# Generated files
+generated_invoices/
+*.pdf
+
+# Development files
+test_invoice.py
+extract_schools.py
+check_duplicates.py
+parse_books.py
+extract_schools.ps1
+
+# Excel files
+*.xlsx
+*.xls
+
+# Documentation
+*.md
