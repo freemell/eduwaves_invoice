@@ -20,8 +20,8 @@ def handler(request):
 # Railway deployment configuration
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    print(f"Starting EDUwaves Invoice Generator on port {port}")
-    print(f"Available routes: /, /health, /api/books/search, /api/schools/search, /api/generate-invoice")
+    print(f"🚀 Starting EDUwaves Invoice Generator on port {port}")
+    print(f"📋 Available routes: /, /health, /api/books/search, /api/schools/search, /api/generate-invoice")
     
     # Check if template file exists
     template_path = os.path.join('templates', 'index.html')
@@ -31,11 +31,30 @@ if __name__ == '__main__':
         print(f"❌ Template file not found: {template_path}")
     
     # List current directory contents
-    print("Current directory contents:")
-    for item in os.listdir('.'):
-        print(f"  - {item}")
+    print("📁 Current directory contents:")
+    try:
+        for item in os.listdir('.'):
+            print(f"  - {item}")
+    except Exception as e:
+        print(f"❌ Error listing directory: {e}")
     
-    app.run(host='0.0.0.0', port=port, debug=False)
+    # Check if data files exist
+    data_files = ['books_database.json', 'unique_schools.csv']
+    for file in data_files:
+        if os.path.exists(file):
+            print(f"✅ Data file found: {file}")
+        else:
+            print(f"❌ Data file missing: {file}")
+    
+    print(f"🌐 Server starting on http://0.0.0.0:{port}")
+    try:
+        app.run(host='0.0.0.0', port=port, debug=False)
+    except Exception as e:
+        print(f"❌ Error starting server: {e}")
+        # Try alternative port
+        alt_port = 8080
+        print(f"🔄 Trying alternative port: {alt_port}")
+        app.run(host='0.0.0.0', port=alt_port, debug=False)
 
 # Load data
 def load_books():
