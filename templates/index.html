@@ -272,19 +272,31 @@
                 <!-- Bank Selection -->
                 <div class="form-section">
                     <h5><i class="fas fa-university"></i> Bank Details</h5>
+                    <div class="alert alert-info">
+                        <strong><i class="fas fa-info-circle"></i> Regional Banking:</strong>
+                        Select the appropriate region for easier payment processing. 
+                        <strong>North Region</strong> uses Zenith Bank, <strong>South Region</strong> uses FCMB, 
+                        and <strong>Special Markets</strong> use Globus Bank.
+                    </div>
                     <div class="bank-selection">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="bankSelection" id="zenithBank" value="zenith" checked>
-                                    <label class="form-check-label" for="zenithBank">
-                                        <strong>ZENITH BANK</strong> (Normal Schools, Credit & Floating Stock)
+                                    <input class="form-check-input" type="radio" name="bankSelection" id="northBank" value="north" checked>
+                                    <label class="form-check-label" for="northBank">
+                                        <strong>NORTH REGION</strong> (Abuja, Katsina, Jos, Benue, Kano, Kaduna, Adamawa)
                                     </label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="bankSelection" id="globusBank" value="globus">
-                                    <label class="form-check-label" for="globusBank">
-                                        <strong>GLOBUS BANK</strong> (Special Markets)
+                                    <input class="form-check-input" type="radio" name="bankSelection" id="southBank" value="south">
+                                    <label class="form-check-label" for="southBank">
+                                        <strong>SOUTH REGION</strong> (Owerri, Lagos, Calabar, Uyo)
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="bankSelection" id="specialBank" value="special">
+                                    <label class="form-check-label" for="specialBank">
+                                        <strong>SPECIAL MARKETS</strong> (Globus Bank)
                                     </label>
                                 </div>
                             </div>
@@ -402,13 +414,20 @@
 
         // Bank details
         const bankDetails = {
-            zenith: {
+            north: {
                 name: "ZENITH BANK",
-                accountNumber: "1229600064"
+                accountNumber: "1229600064",
+                regions: "Abuja, Katsina, Jos, Benue, Kano, Kaduna, Adamawa"
             },
-            globus: {
+            south: {
+                name: "FCMB",
+                accountNumber: "6207930017",
+                regions: "Owerri, Lagos, Calabar, Uyo"
+            },
+            special: {
                 name: "GLOBUS BANK", 
-                accountNumber: "1000429262"
+                accountNumber: "1000429262",
+                regions: "Special Markets"
             }
         };
 
@@ -590,8 +609,8 @@
                     salesManager.value = '';
                     document.getElementById('customerPhone').value = '';
                     
-                    // Auto-select Globus Bank for special market
-                    document.getElementById('globusBank').checked = true;
+                    // Auto-select Special Markets Bank for special market
+                    document.getElementById('specialBank').checked = true;
                     updateBankDetails();
                 } else {
                     // For other types, use search functionality
@@ -600,8 +619,8 @@
                     salesManager.readOnly = true;
                     salesManager.placeholder = "";
                     
-                    // Auto-select Zenith Bank for normal operations
-                    document.getElementById('zenithBank').checked = true;
+                    // Auto-select North Region Bank for normal operations (default)
+                    document.getElementById('northBank').checked = true;
                     updateBankDetails();
                 }
             });
