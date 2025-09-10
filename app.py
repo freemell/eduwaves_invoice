@@ -20,6 +20,8 @@ def handler(request):
 # Railway deployment configuration
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
+    print(f"Starting EDUwaves Invoice Generator on port {port}")
+    print(f"Available routes: /, /health, /api/books/search, /api/schools/search, /api/generate-invoice")
     app.run(host='0.0.0.0', port=port, debug=False)
 
 # Load data
@@ -58,6 +60,14 @@ def get_schools_data():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/health')
+def health():
+    return jsonify({"status": "ok", "message": "EDUwaves Invoice Generator is running!"})
+
+@app.route('/test')
+def test():
+    return "<h1>EDUwaves Invoice Generator</h1><p>App is working! <a href='/'>Go to main page</a></p>"
 
 @app.route('/api/books/search')
 def search_books():
