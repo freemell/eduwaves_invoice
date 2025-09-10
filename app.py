@@ -13,6 +13,17 @@ import io
 
 app = Flask(__name__)
 
+# Debug: Print all routes when app starts
+def print_routes():
+    print("🔍 Registered routes:")
+    for rule in app.url_map.iter_rules():
+        print(f"  {rule.methods} {rule.rule}")
+
+# Simple test route to verify app is working
+@app.route('/ping')
+def ping():
+    return jsonify({"status": "ok", "message": "EDUwaves Invoice Generator is running!", "routes": [str(rule) for rule in app.url_map.iter_rules()]})
+
 # Vercel compatibility
 def handler(request):
     return app(request.environ, lambda *args: None)
@@ -45,6 +56,9 @@ if __name__ == '__main__':
             print(f"✅ Data file found: {file}")
         else:
             print(f"❌ Data file missing: {file}")
+    
+    # Print all registered routes
+    print_routes()
     
     print(f"🌐 Server starting on http://0.0.0.0:{port}")
     try:
@@ -220,6 +234,16 @@ def serve_logo(filename):
     if filename == 'WhatsApp_Image_2025-08-01_at_12.46.28_e1c96073-removebg-preview.png':
         return send_file(filename)
     return "File not found", 404
+
+# Catch-all route for debugging
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({
+        "error": "Route not found",
+        "message": "The requested URL was not found on the server",
+        "available_routes": [str(rule) for rule in app.url_map.iter_rules()],
+        "requested_path": request.path
+    }), 404
 
 def create_invoice_pdf(data, invoice_number):
     buffer = io.BytesIO()
