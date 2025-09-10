@@ -36,3 +36,9 @@ tmp_upload_dir = None
 # SSL (not needed for Railway)
 keyfile = None
 certfile = None
+
+# Preload the application for better performance
+preload_app = True
+
+# Worker timeout for graceful shutdown
+graceful_timeout = 30

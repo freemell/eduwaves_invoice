@@ -28,47 +28,20 @@ def ping():
 def handler(request):
     return app(request.environ, lambda *args: None)
 
-# Railway deployment configuration
+# Railway deployment configuration - Only run Flask dev server locally
 if __name__ == '__main__':
+    # Only run Flask dev server for local development
+    # In production, Railway will use gunicorn with wsgi.py
     port = int(os.environ.get('PORT', 5000))
-    print(f"🚀 Starting EDUwaves Invoice Generator on port {port}")
+    print(f"🚀 Starting EDUwaves Invoice Generator (LOCAL DEV) on port {port}")
     print(f"📋 Available routes: /, /health, /api/books/search, /api/schools/search, /api/generate-invoice")
-    
-    # Check if template file exists
-    template_path = os.path.join('templates', 'index.html')
-    if os.path.exists(template_path):
-        print(f"✅ Template file found: {template_path}")
-    else:
-        print(f"❌ Template file not found: {template_path}")
-    
-    # List current directory contents
-    print("📁 Current directory contents:")
-    try:
-        for item in os.listdir('.'):
-            print(f"  - {item}")
-    except Exception as e:
-        print(f"❌ Error listing directory: {e}")
-    
-    # Check if data files exist
-    data_files = ['books_database.json', 'unique_schools.csv']
-    for file in data_files:
-        if os.path.exists(file):
-            print(f"✅ Data file found: {file}")
-        else:
-            print(f"❌ Data file missing: {file}")
     
     # Print all registered routes
     print_routes()
     
-    print(f"🌐 Server starting on http://0.0.0.0:{port}")
-    try:
-        app.run(host='0.0.0.0', port=port, debug=False)
-    except Exception as e:
-        print(f"❌ Error starting server: {e}")
-        # Try alternative port
-        alt_port = 8080
-        print(f"🔄 Trying alternative port: {alt_port}")
-        app.run(host='0.0.0.0', port=alt_port, debug=False)
+    print(f"🌐 Local dev server starting on http://0.0.0.0:{port}")
+    print("⚠️  WARNING: This is a development server. Use WSGI for production!")
+    app.run(host='0.0.0.0', port=port, debug=True)
 
 # Load data
 def load_books():

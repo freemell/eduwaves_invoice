@@ -21,6 +21,9 @@ COPY . .
 # Create necessary directories
 RUN mkdir -p templates static
 
+# Make startup script executable
+RUN chmod +x start_wsgi.sh
+
 # Expose port
 EXPOSE 5000
 
@@ -28,6 +31,7 @@ EXPOSE 5000
 ENV PORT=5000
 ENV PYTHONPATH=/app
 ENV FLASK_APP=app.py
+ENV RAILWAY_ENVIRONMENT=production
 
-# Run the application with gunicorn using WSGI file
-CMD ["gunicorn", "--config", "gunicorn.conf.py", "wsgi:application"]
+# Run the application with WSGI server
+CMD ["./start_wsgi.sh"]
