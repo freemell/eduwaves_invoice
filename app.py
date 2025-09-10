@@ -17,6 +17,10 @@ app = Flask(__name__)
 def handler(request):
     return app(request.environ, lambda *args: None)
 
+# This is required for Vercel
+if __name__ == '__main__':
+    app.run(debug=True)
+
 # Load data
 def load_books():
     try:
