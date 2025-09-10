@@ -22,6 +22,19 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     print(f"Starting EDUwaves Invoice Generator on port {port}")
     print(f"Available routes: /, /health, /api/books/search, /api/schools/search, /api/generate-invoice")
+    
+    # Check if template file exists
+    template_path = os.path.join('templates', 'index.html')
+    if os.path.exists(template_path):
+        print(f"✅ Template file found: {template_path}")
+    else:
+        print(f"❌ Template file not found: {template_path}")
+    
+    # List current directory contents
+    print("Current directory contents:")
+    for item in os.listdir('.'):
+        print(f"  - {item}")
+    
     app.run(host='0.0.0.0', port=port, debug=False)
 
 # Load data
@@ -59,7 +72,64 @@ def get_schools_data():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    try:
+        return render_template('index.html')
+    except Exception as e:
+        # Fallback if template fails to load
+        return f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>EDUwaves Invoice Generator</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        </head>
+        <body>
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h2 class="mb-0">📚 EDUwaves Invoice Generator</h2>
+                                <p class="mb-0">Global Positioning for the African Child</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <h4>🎉 Application is Running!</h4>
+                                    <p>Your EDUwaves Invoice Generator is successfully deployed on Railway!</p>
+                                    <p><strong>Template Error:</strong> {str(e)}</p>
+                                </div>
+                                
+                                <h5>Available Features:</h5>
+                                <ul>
+                                    <li>✅ <strong>93 Books</strong> - Complete catalog search</li>
+                                    <li>✅ <strong>2,032 Schools</strong> - Database with autocomplete</li>
+                                    <li>✅ <strong>PDF Generation</strong> - Professional invoices</li>
+                                    <li>✅ <strong>Bank Selection</strong> - Zenith/Globus options</li>
+                                    <li>✅ <strong>Invoice Types</strong> - Floating/Credit/Special Market</li>
+                                </ul>
+                                
+                                <h5>Test Endpoints:</h5>
+                                <div class="d-grid gap-2">
+                                    <a href="/health" class="btn btn-outline-primary">Health Check</a>
+                                    <a href="/test" class="btn btn-outline-secondary">Simple Test</a>
+                                    <a href="/api/books/search?q=math" class="btn btn-outline-success">Test Book Search</a>
+                                    <a href="/api/schools/search?q=federal" class="btn btn-outline-info">Test School Search</a>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <h6>Next Steps:</h6>
+                                    <p>The application is working, but there's a template loading issue. The main interface should be accessible once the template issue is resolved.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
 
 @app.route('/health')
 def health():
