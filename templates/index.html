@@ -329,24 +329,18 @@
                 <div class="form-section">
                     <h5><i class="fas fa-university"></i> Bank Details</h5>
                     <div class="alert alert-info">
-                        <strong><i class="fas fa-info-circle"></i> Regional Banking:</strong>
-                        Select the appropriate region for easier payment processing. 
-                        <strong>North Region</strong> uses Zenith Bank, <strong>South Region</strong> uses FCMB, 
+                        <strong><i class="fas fa-info-circle"></i> Banking Options:</strong>
+                        Select the appropriate payment method. 
+                        <strong>Cash Sales</strong> uses Zenith Bank, 
                         and <strong>Special Markets</strong> use Globus Bank.
                     </div>
                     <div class="bank-selection">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="bankSelection" id="northBank" value="north" checked>
-                                    <label class="form-check-label" for="northBank">
-                                        <strong>NORTH REGION</strong> (Abuja, Katsina, Jos, Benue, Kano, Kaduna, Adamawa)
-                                    </label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="bankSelection" id="southBank" value="south">
-                                    <label class="form-check-label" for="southBank">
-                                        <strong>SOUTH REGION</strong> (Owerri, Lagos, Calabar, Uyo)
+                                    <input class="form-check-input" type="radio" name="bankSelection" id="cashSales" value="cash" checked>
+                                    <label class="form-check-label" for="cashSales">
+                                        <strong>CASH SALES</strong> (Zenith Bank)
                                     </label>
                                 </div>
                                 <div class="form-check form-check-inline">
@@ -476,15 +470,10 @@
 
         // Bank details
         const bankDetails = {
-            north: {
+            cash: {
                 name: "ZENITH BANK",
                 accountNumber: "1229600064",
-                regions: "Abuja, Katsina, Jos, Benue, Kano, Kaduna, Adamawa"
-            },
-            south: {
-                name: "FCMB",
-                accountNumber: "6207930017",
-                regions: "Owerri, Lagos, Calabar, Uyo"
+                regions: "Cash Sales"
             },
             special: {
                 name: "GLOBUS BANK", 
@@ -695,8 +684,8 @@
                     customerSearch.placeholder = "Type school name to search...";
                     salesManager.placeholder = "Enter sales manager name";
                     
-                    // Auto-select North Region Bank for normal operations (default)
-                    document.getElementById('northBank').checked = true;
+                    // Auto-select Cash Sales Bank for normal operations (default)
+                    document.getElementById('cashSales').checked = true;
                     updateBankDetails();
                 }
             });
