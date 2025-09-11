@@ -158,6 +158,21 @@
             margin: 5px;
         }
         
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+        
+        .contact-item img {
+            transition: transform 0.2s ease;
+        }
+        
+        .contact-item:hover img {
+            transform: scale(1.1);
+        }
+        
         .badge-floating { background: #28a745; color: white; }
         .badge-credit { background: #ffc107; color: black; }
         .badge-special { background: #dc3545; color: white; }
@@ -217,16 +232,28 @@
                 <div class="contact-info text-center mt-3" style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #e9ecef;">
                     <div class="row">
                         <div class="col-md-3 col-sm-6 mb-2">
-                            <small><i class="fab fa-whatsapp text-success"></i> <strong>WhatsApp:</strong><br>09025977776</small>
+                            <div class="contact-item">
+                                <img src="images/whatsapp.png" alt="WhatsApp" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">
+                                <small><strong>WhatsApp:</strong><br>09025977776</small>
+                            </div>
                         </div>
                         <div class="col-md-3 col-sm-6 mb-2">
-                            <small><i class="fas fa-phone text-primary"></i> <strong>Call:</strong><br>+234 803 086 7910<br>07066483007</small>
+                            <div class="contact-item">
+                                <i class="fas fa-phone text-primary" style="margin-right: 8px;"></i>
+                                <small><strong>Call:</strong><br>+234 803 086 7910<br>07066483007</small>
+                            </div>
                         </div>
                         <div class="col-md-3 col-sm-6 mb-2">
-                            <small><i class="fas fa-globe text-info"></i> <strong>Website:</strong><br>www.eduwavespublishers.com</small>
+                            <div class="contact-item">
+                                <img src="images/web.png" alt="Website" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">
+                                <small><strong>Website:</strong><br>www.eduwavespublishers.com</small>
+                            </div>
                         </div>
                         <div class="col-md-3 col-sm-6 mb-2">
-                            <small><i class="fas fa-envelope text-danger"></i> <strong>Email:</strong><br>eduwavespl@gmail.com</small>
+                            <div class="contact-item">
+                                <img src="images/gmail-logo.png" alt="Gmail" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">
+                                <small><strong>Email:</strong><br>eduwavespl@gmail.com</small>
+                            </div>
                         </div>
                     </div>
                 </div>

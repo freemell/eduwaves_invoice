@@ -208,6 +208,13 @@ def serve_logo(filename):
         return send_file(filename)
     return "File not found", 404
 
+@app.route('/images/<filename>')
+def serve_images(filename):
+    image_path = os.path.join('images', filename)
+    if os.path.exists(image_path):
+        return send_file(image_path)
+    return "Image not found", 404
+
 # Catch-all route for debugging
 @app.errorhandler(404)
 def not_found(error):
@@ -284,11 +291,7 @@ def create_invoice_pdf(data, invoice_number):
     company_data = [
         ["EDUWAVES PUBLISHERS LTD", "", f"Date: {datetime.now().strftime('%d-%b-%Y')}"],
         ["14 Onitsha Crescent, Area 11", "", f"Invoice No.: {invoice_number}"],
-        ["Garki, Abuja-FCT, Nigeria", "", f"Order No.: HO/OR/{datetime.now().strftime('%y%m%d')}"],
-        ["WhatsApp: 09025977776", "", ""],
-        ["Call: +234 803 086 7910, 07066483007", "", ""],
-        ["Website: www.eduwavespublishers.com", "", ""],
-        ["Email: eduwavespl@gmail.com", "", ""]
+        ["Garki, Abuja-FCT, Nigeria", "", f"Order No.: HO/OR/{datetime.now().strftime('%y%m%d')}"]
     ]
     
     company_table = Table(company_data, colWidths=[3.5*inch, 0.5*inch, 2.5*inch])
@@ -306,6 +309,50 @@ def create_invoice_pdf(data, invoice_number):
     ]))
     
     story.append(company_table)
+    story.append(Spacer(1, 10))
+    
+    # Contact Information with Icons
+    contact_style = ParagraphStyle(
+        'ContactInfo',
+        parent=styles['Normal'],
+        fontSize=9,
+        textColor=colors.black,
+        alignment=TA_LEFT,
+        fontName='Helvetica',
+        spaceAfter=3
+    )
+    
+    # Create contact information with icons
+    contact_info = []
+    
+    # WhatsApp
+    whatsapp_path = "images/whatsapp.png"
+    if os.path.exists(whatsapp_path):
+        whatsapp_icon = Image(whatsapp_path, width=0.15*inch, height=0.15*inch)
+        contact_info.append(whatsapp_icon)
+    contact_info.append(Paragraph("WhatsApp: 09025977776", contact_style))
+    
+    # Phone
+    contact_info.append(Paragraph("Call: +234 803 086 7910, 07066483007", contact_style))
+    
+    # Website
+    web_path = "images/web.png"
+    if os.path.exists(web_path):
+        web_icon = Image(web_path, width=0.15*inch, height=0.15*inch)
+        contact_info.append(web_icon)
+    contact_info.append(Paragraph("Website: www.eduwavespublishers.com", contact_style))
+    
+    # Email
+    gmail_path = "images/gmail-logo.png"
+    if os.path.exists(gmail_path):
+        gmail_icon = Image(gmail_path, width=0.15*inch, height=0.15*inch)
+        contact_info.append(gmail_icon)
+    contact_info.append(Paragraph("Email: eduwavespl@gmail.com", contact_style))
+    
+    # Add contact info to story
+    for item in contact_info:
+        story.append(item)
+    
     story.append(Spacer(1, 15))
     
     # Sales Manager (top right)
