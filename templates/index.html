@@ -527,7 +527,7 @@
         document.getElementById('customerSearch').addEventListener('input', function() {
             const invoiceType = document.querySelector('input[name="invoiceType"]:checked').value;
             
-            // Don't search if floating stock is selected
+            // For floating stock, don't allow typing in customer search (it's readonly)
             if (invoiceType === 'floating') {
                 document.getElementById('customerResults').style.display = 'none';
                 return;
@@ -586,15 +586,20 @@
         function selectCustomer(school) {
             const invoiceType = document.querySelector('input[name="invoiceType"]:checked').value;
             
-            // Only allow customer selection if not floating stock
-            if (invoiceType !== 'floating') {
+            if (invoiceType === 'floating') {
+                // For floating stock, only update sales manager and phone, keep customer name as "Floating Stock"
+                document.getElementById('salesManager').value = school.sm_name;
+                document.getElementById('customerPhone').value = school.phone;
+                document.getElementById('customerResults').style.display = 'none';
+            } else {
+                // For other types, update all fields
                 document.getElementById('customerSearch').value = school.name;
                 document.getElementById('customerPhone').value = school.phone;
                 document.getElementById('salesManager').value = school.sm_name;
                 document.getElementById('customerResults').style.display = 'none';
                 
-                // Show a note that fields are editable (only for non-floating stock)
-                if (invoiceType !== 'floating' && !document.getElementById('editableNote')) {
+                // Show a note that fields are editable
+                if (!document.getElementById('editableNote')) {
                     const note = document.createElement('div');
                     note.id = 'editableNote';
                     note.className = 'alert alert-info mt-2';
@@ -693,14 +698,15 @@
                     document.getElementById('specialBank').checked = true;
                     updateBankDetails();
                 } else if (invoiceType === 'floating') {
-                    // For floating stock, auto-fill with specific values
+                    // For floating stock, auto-fill customer name but keep sales manager editable
                     customerSearch.value = 'Floating Stock';
-                    salesManager.value = 'Recipient';
+                    salesManager.value = '';
+                    salesManager.placeholder = 'Enter sales manager name...';
                     document.getElementById('customerPhone').value = '';
                     
-                    // Make fields readonly for floating stock
+                    // Make customer name readonly but sales manager editable for floating stock
                     customerSearch.readOnly = true;
-                    salesManager.readOnly = true;
+                    salesManager.readOnly = false;
                     
                     // Auto-select Cash Sales Bank for floating stock
                     document.getElementById('cashSales').checked = true;
