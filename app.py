@@ -262,7 +262,19 @@ def create_invoice_pdf(data, invoice_number):
     if os.path.exists(logo_path):
         logo = Image(logo_path, width=1.5*inch, height=0.8*inch)
         story.append(logo)
-        story.append(Spacer(1, 10))
+        story.append(Spacer(1, 5))
+    
+    # Company Slogan
+    slogan_style = ParagraphStyle(
+        'Slogan',
+        parent=styles['Normal'],
+        fontSize=9,
+        textColor=colors.grey,
+        alignment=TA_CENTER,
+        fontName='Helvetica-Oblique',
+        spaceAfter=10
+    )
+    story.append(Paragraph("...global positioning for the african child", slogan_style))
     
     # Invoice Title
     story.append(Paragraph("INVOICE", title_style))
@@ -272,7 +284,11 @@ def create_invoice_pdf(data, invoice_number):
     company_data = [
         ["EDUWAVES PUBLISHERS LTD", "", f"Date: {datetime.now().strftime('%d-%b-%Y')}"],
         ["14 Onitsha Crescent, Area 11", "", f"Invoice No.: {invoice_number}"],
-        ["Garki, Abuja-FCT, Nigeria", "", f"Order No.: HO/OR/{datetime.now().strftime('%y%m%d')}"]
+        ["Garki, Abuja-FCT, Nigeria", "", f"Order No.: HO/OR/{datetime.now().strftime('%y%m%d')}"],
+        ["WhatsApp: 09025977776", "", ""],
+        ["Call: +234 803 086 7910, 07066483007", "", ""],
+        ["Website: www.eduwavespublishers.com", "", ""],
+        ["Email: eduwavespl@gmail.com", "", ""]
     ]
     
     company_table = Table(company_data, colWidths=[3.5*inch, 0.5*inch, 2.5*inch])
