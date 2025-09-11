@@ -259,6 +259,12 @@
                 </div>
             </div>
 
+            <!-- Warning Messages -->
+            <div class="alert alert-warning" role="alert">
+                <h6><i class="fas fa-exclamation-triangle"></i> Important Notice</h6>
+                <p class="mb-1"><strong>Sales Representative Changes:</strong> Some sales representatives have been changed but have not been updated in the database. Please make sure to cross-check the sales manager information before generating the invoice.</p>
+            </div>
+
             <form id="invoiceForm">
                 <!-- Invoice Type Selection -->
                 <div class="form-section">
@@ -304,7 +310,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="customerPhone" class="form-label">Phone Number</label>
-                            <input type="text" class="form-control" id="customerPhone" readonly>
+                            <input type="text" class="form-control" id="customerPhone" placeholder="Enter phone number">
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -314,7 +320,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="salesManager" class="form-label">Sales Manager</label>
-                            <input type="text" class="form-control" id="salesManager" readonly>
+                            <input type="text" class="form-control" id="salesManager" placeholder="Enter sales manager name">
                         </div>
                     </div>
                 </div>
@@ -443,6 +449,12 @@
                     <button type="submit" class="btn btn-primary btn-lg">
                         <i class="fas fa-file-pdf"></i> Generate Invoice PDF
                     </button>
+                </div>
+
+                <!-- Bottom Warning -->
+                <div class="alert alert-info mt-3" role="alert">
+                    <h6><i class="fas fa-info-circle"></i> Price Notice</h6>
+                    <p class="mb-0"><strong>Kingdom Heritage School:</strong> The prices for Kingdom Heritage School differ from the standard catalog. Please make sure to check and verify the correct rates before generating the invoice.</p>
                 </div>
 
                 <!-- Loading Indicator -->
@@ -579,6 +591,15 @@
             document.getElementById('customerPhone').value = school.phone;
             document.getElementById('salesManager').value = school.sm_name;
             document.getElementById('customerResults').style.display = 'none';
+            
+            // Show a note that fields are editable
+            if (!document.getElementById('editableNote')) {
+                const note = document.createElement('div');
+                note.id = 'editableNote';
+                note.className = 'alert alert-info mt-2';
+                note.innerHTML = '<small><i class="fas fa-info-circle"></i> <strong>Note:</strong> All contact fields are editable. You can modify any information as needed.</small>';
+                document.querySelector('.form-section').appendChild(note);
+            }
         }
 
         // Update items table
@@ -596,7 +617,10 @@
                         <td>${index + 1}</td>
                         <td>${item.book_code}</td>
                         <td>${item.title}</td>
-                        <td>N${item.price.toLocaleString()}</td>
+                        <td>
+                            <input type="number" class="form-control form-control-sm" value="${item.price}" 
+                                   min="0" step="0.01" onchange="updateRate(${index}, this.value)">
+                        </td>
                         <td>
                             <input type="number" class="form-control form-control-sm" value="${item.quantity}" 
                                    min="1" onchange="updateQuantity(${index}, this.value)">
@@ -614,6 +638,12 @@
         // Update quantity
         function updateQuantity(index, newQuantity) {
             selectedItems[index].quantity = parseInt(newQuantity) || 1;
+            updateItemsTable();
+        }
+
+        // Update rate
+        function updateRate(index, newRate) {
+            selectedItems[index].price = parseFloat(newRate) || 0;
             updateItemsTable();
         }
 
@@ -649,9 +679,7 @@
                 
                 if (isSpecialMarket) {
                     // For special market, allow manual input
-                    customerSearch.readOnly = false;
                     customerSearch.placeholder = "Enter school name manually...";
-                    salesManager.readOnly = false;
                     salesManager.placeholder = "Enter sales manager name...";
                     
                     // Clear existing values
@@ -664,10 +692,8 @@
                     updateBankDetails();
                 } else {
                     // For other types, use search functionality
-                    customerSearch.readOnly = false;
                     customerSearch.placeholder = "Type school name to search...";
-                    salesManager.readOnly = true;
-                    salesManager.placeholder = "";
+                    salesManager.placeholder = "Enter sales manager name";
                     
                     // Auto-select North Region Bank for normal operations (default)
                     document.getElementById('northBank').checked = true;
