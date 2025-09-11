@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDUwaves Invoice Reports</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .main-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin: 20px auto;
+            padding: 30px;
+            max-width: 1200px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .form-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .form-section h5 {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .summary-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #28a745;
+        }
+        
+        .summary-card h6 {
+            color: #28a745;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-label {
+            font-weight: 500;
+            color: #666;
+        }
+        
+        .stat-value {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .table-responsive {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .table th {
+            background: #667eea;
+            color: white;
+            border: none;
+            font-weight: 600;
+        }
+        
+        .table td {
+            vertical-align: middle;
+            border-color: #eee;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner-border {
+            color: #667eea;
+        }
+        
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .back-link:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="main-container">
+            <!-- Header -->
+            <div class="header">
+                <div class="text-center mb-3">
+                    <img src="WhatsApp_Image_2025-08-01_at_12.46.28_e1c96073-removebg-preview.png" 
+                         alt="EDUwaves Logo" 
+                         style="max-height: 60px; max-width: 150px;">
+                </div>
+                <h1><i class="fas fa-chart-bar"></i> Invoice Reports</h1>
+                <p>Generate and view invoice reports with date range filtering</p>
+                <a href="/" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Back to Invoice Generator
+                </a>
+            </div>
+
+            <!-- Date Range Selection -->
+            <div class="form-section">
+                <h5><i class="fas fa-calendar-alt"></i> Select Date Range</h5>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="startDate" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="startDate" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="endDate" class="form-label">End Date</label>
+                        <input type="date" class="form-control" id="endDate" required>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="button" class="btn btn-primary w-100" onclick="generateReport()">
+                            <i class="fas fa-search"></i> Generate Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div class="loading" id="loadingIndicator">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Generating report...</p>
+            </div>
+
+            <!-- Summary Section -->
+            <div id="summarySection" style="display: none;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="summary-card">
+                            <h6><i class="fas fa-chart-pie"></i> Summary Statistics</h6>
+                            <div id="summaryStats"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="summary-card">
+                            <h6><i class="fas fa-tags"></i> Breakdown by Type</h6>
+                            <div id="typeBreakdown"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="summary-card">
+                            <h6><i class="fas fa-users"></i> Top Customers</h6>
+                            <div id="topCustomers"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invoices Table -->
+            <div id="invoicesSection" style="display: none;">
+                <div class="form-section">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5><i class="fas fa-list"></i> Invoice Details</h5>
+                        <button type="button" class="btn btn-primary" onclick="downloadReportPDF()">
+                            <i class="fas fa-file-pdf"></i> Download PDF Report
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Date</th>
+                                    <th>Customer</th>
+                                    <th>Type</th>
+                                    <th>Sales Manager</th>
+                                    <th>Quantity</th>
+                                    <th>Net Amount (N)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="invoicesTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentReportData = null;
+
+        // Set default date range (last 30 days)
+        function setDefaultDateRange() {
+            const today = new Date();
+            const thirtyDaysAgo = new Date(today);
+            thirtyDaysAgo.setDate(today.getDate() - 30);
+            
+            document.getElementById('endDate').value = today.toISOString().split('T')[0];
+            document.getElementById('startDate').value = thirtyDaysAgo.toISOString().split('T')[0];
+        }
+
+        // Initialize default dates
+        setDefaultDateRange();
+
+        function generateReport() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            if (!startDate || !endDate) {
+                alert('Please select both start and end dates.');
+                return;
+            }
+            
+            if (new Date(startDate) > new Date(endDate)) {
+                alert('Start date cannot be after end date.');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('summarySection').style.display = 'none';
+            document.getElementById('invoicesSection').style.display = 'none';
+            
+            // Fetch summary data
+            fetch('/api/reports/summary', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    start_date: startDate,
+                    end_date: endDate
+                })
+            })
+            .then(response => response.json())
+            .then(summary => {
+                displaySummary(summary);
+                
+                // Fetch detailed invoices
+                return fetch('/api/reports/invoices', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        start_date: startDate,
+                        end_date: endDate
+                    })
+                });
+            })
+            .then(response => response.json())
+            .then(invoices => {
+                displayInvoices(invoices);
+                currentReportData = { startDate, endDate };
+                
+                // Hide loading
+                document.getElementById('loadingIndicator').style.display = 'none';
+            })
+            .catch(error => {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                console.error('Error:', error);
+                alert('Error generating report. Please try again.');
+            });
+        }
+
+        function displaySummary(summary) {
+            // Display summary statistics
+            const summaryStats = document.getElementById('summaryStats');
+            summaryStats.innerHTML = `
+                <div class="stat-item">
+                    <span class="stat-label">Total Invoices:</span>
+                    <span class="stat-value">${summary.total_invoices || 0}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Total Quantity:</span>
+                    <span class="stat-value">${summary.total_quantity || 0}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Gross Total:</span>
+                    <span class="stat-value">N${(summary.total_gross || 0).toLocaleString()}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Total Discount:</span>
+                    <span class="stat-value">N${(summary.total_discount || 0).toLocaleString()}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Net Total:</span>
+                    <span class="stat-value">N${(summary.total_net || 0).toLocaleString()}</span>
+                </div>
+            `;
+            
+            // Display type breakdown
+            const typeBreakdown = document.getElementById('typeBreakdown');
+            if (summary.by_type && summary.by_type.length > 0) {
+                typeBreakdown.innerHTML = summary.by_type.map(item => `
+                    <div class="stat-item">
+                        <span class="stat-label">${item.invoice_type.charAt(0).toUpperCase() + item.invoice_type.slice(1)}:</span>
+                        <span class="stat-value">${item.count} (N${item.total_amount.toLocaleString()})</span>
+                    </div>
+                `).join('');
+            } else {
+                typeBreakdown.innerHTML = '<div class="text-muted">No data available</div>';
+            }
+            
+            // Display top customers
+            const topCustomers = document.getElementById('topCustomers');
+            if (summary.top_customers && summary.top_customers.length > 0) {
+                topCustomers.innerHTML = summary.top_customers.map(item => `
+                    <div class="stat-item">
+                        <span class="stat-label">${item.customer_name}:</span>
+                        <span class="stat-value">${item.invoice_count} invoices (N${item.total_amount.toLocaleString()})</span>
+                    </div>
+                `).join('');
+            } else {
+                topCustomers.innerHTML = '<div class="text-muted">No data available</div>';
+            }
+            
+            document.getElementById('summarySection').style.display = 'block';
+        }
+
+        function displayInvoices(invoices) {
+            const tbody = document.getElementById('invoicesTableBody');
+            
+            if (invoices.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">No invoices found for the selected date range.</td></tr>';
+            } else {
+                tbody.innerHTML = invoices.map(invoice => `
+                    <tr>
+                        <td>${invoice.invoice_number}</td>
+                        <td>${invoice.created_at.split('T')[0]}</td>
+                        <td>${invoice.customer_name}</td>
+                        <td><span class="badge bg-primary">${invoice.invoice_type.charAt(0).toUpperCase() + invoice.invoice_type.slice(1)}</span></td>
+                        <td>${invoice.sales_manager}</td>
+                        <td>${invoice.total_quantity}</td>
+                        <td>N${invoice.net_total.toLocaleString()}</td>
+                    </tr>
+                `).join('');
+            }
+            
+            document.getElementById('invoicesSection').style.display = 'block';
+        }
+
+        function downloadReportPDF() {
+            if (!currentReportData) {
+                alert('Please generate a report first.');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loadingIndicator').style.display = 'block';
+            
+            fetch('/api/reports/generate-pdf', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(currentReportData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                
+                if (data.success) {
+                    // Create and download PDF
+                    const pdfData = data.pdf_data;
+                    const pdfBlob = new Blob([Uint8Array.from(atob(pdfData), c => c.charCodeAt(0))], {
+                        type: 'application/pdf'
+                    });
+                    
+                    const url = URL.createObjectURL(pdfBlob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `invoice_report_${currentReportData.startDate}_to_${currentReportData.endDate}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                } else {
+                    alert('Error generating PDF report. Please try again.');
+                }
+            })
+            .catch(error => {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                console.error('Error:', error);
+                alert('Error generating PDF report. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>

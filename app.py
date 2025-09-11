@@ -10,6 +10,7 @@ from reportlab.lib.units import inch
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 import io
+from database import db
 
 app = Flask(__name__)
 
@@ -182,12 +183,110 @@ def search_schools():
     
     return jsonify(results[:10])
 
+@app.route('/reports')
+def reports_page():
+    """Reports page"""
+    return render_template('reports.html')
+
+@app.route('/api/reports/summary', methods=['POST'])
+def get_report_summary():
+    """Get report summary for date range"""
+    data = request.json
+    start_date = data.get('start_date')
+    end_date = data.get('end_date')
+    
+    if not start_date or not end_date:
+        return jsonify({'error': 'Start date and end date are required'}), 400
+    
+    try:
+        summary = db.get_invoice_summary(start_date, end_date)
+        return jsonify(summary)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/reports/invoices', methods=['POST'])
+def get_report_invoices():
+    """Get invoices for date range"""
+    data = request.json
+    start_date = data.get('start_date')
+    end_date = data.get('end_date')
+    
+    if not start_date or not end_date:
+        return jsonify({'error': 'Start date and end date are required'}), 400
+    
+    try:
+        invoices = db.get_invoices_by_date_range(start_date, end_date)
+        return jsonify(invoices)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/reports/generate-pdf', methods=['POST'])
+def generate_report_pdf():
+    """Generate PDF report for date range"""
+    data = request.json
+    start_date = data.get('start_date')
+    end_date = data.get('end_date')
+    
+    if not start_date or not end_date:
+        return jsonify({'error': 'Start date and end date are required'}), 400
+    
+    try:
+        # Get data
+        summary = db.get_invoice_summary(start_date, end_date)
+        invoices = db.get_invoices_by_date_range(start_date, end_date)
+        
+        # Create PDF
+        pdf_buffer = create_report_pdf(summary, invoices, start_date, end_date)
+        
+        # Return as base64
+        import base64
+        pdf_base64 = base64.b64encode(pdf_buffer.getvalue()).decode('utf-8')
+        
+        return jsonify({
+            'success': True,
+            'pdf_data': pdf_base64
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/api/generate-invoice', methods=['POST'])
 def generate_invoice():
     data = request.json
     
     # Generate invoice number
     invoice_number = f"HO/IN/{datetime.now().strftime('%y%m%d%H%M')}"
+    
+    # Calculate totals
+    total_quantity = sum(item['quantity'] for item in data['items'])
+    gross_total = sum(item['quantity'] * item['price'] for item in data['items'])
+    discount_amount = gross_total * (data['discount_percent'] / 100)
+    net_total = gross_total - discount_amount
+    
+    # Prepare invoice data for database
+    invoice_data = {
+        'invoice_number': invoice_number,
+        'invoice_type': data['invoice_type'],
+        'customer_name': data['customer_name'],
+        'customer_phone': data.get('customer_phone', ''),
+        'customer_address': data.get('customer_address', ''),
+        'sales_manager': data['sales_manager'],
+        'bank_name': data['bank_name'],
+        'account_number': data['account_number'],
+        'total_quantity': total_quantity,
+        'gross_total': gross_total,
+        'discount_percent': data['discount_percent'],
+        'discount_amount': discount_amount,
+        'net_total': net_total,
+        'items': data['items']
+    }
+    
+    try:
+        # Save to database
+        invoice_id = db.save_invoice(invoice_data)
+        print(f"✅ Invoice saved to database with ID: {invoice_id}")
+    except Exception as e:
+        print(f"❌ Error saving invoice to database: {e}")
+        # Continue with PDF generation even if database save fails
     
     # Create PDF
     pdf_buffer = create_invoice_pdf(data, invoice_number)
@@ -576,6 +675,176 @@ def create_invoice_pdf(data, invoice_number):
     ]))
     
     story.append(footer_table)
+    
+    # Build PDF
+    doc.build(story)
+    buffer.seek(0)
+    return buffer
+
+def create_report_pdf(summary, invoices, start_date, end_date):
+    """Create PDF report for invoice summary"""
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4, topMargin=0.5*inch, bottomMargin=0.5*inch)
+    
+    # Styles
+    styles = getSampleStyleSheet()
+    title_style = ParagraphStyle(
+        'CustomTitle',
+        parent=styles['Title'],
+        fontSize=18,
+        textColor=colors.black,
+        alignment=TA_CENTER,
+        fontName='Helvetica-Bold',
+        spaceAfter=20
+    )
+    
+    heading_style = ParagraphStyle(
+        'CustomHeading',
+        parent=styles['Heading2'],
+        fontSize=14,
+        textColor=colors.black,
+        alignment=TA_LEFT,
+        fontName='Helvetica-Bold',
+        spaceAfter=10
+    )
+    
+    normal_style = ParagraphStyle(
+        'CustomNormal',
+        parent=styles['Normal'],
+        fontSize=10,
+        textColor=colors.black,
+        alignment=TA_LEFT,
+        fontName='Helvetica',
+        spaceAfter=5
+    )
+    
+    story = []
+    
+    # Title
+    title = Paragraph("EDUwaves Publishers - Invoice Report", title_style)
+    story.append(title)
+    
+    # Date range
+    date_range = Paragraph(f"Report Period: {start_date} to {end_date}", normal_style)
+    story.append(date_range)
+    story.append(Spacer(1, 20))
+    
+    # Summary section
+    story.append(Paragraph("Summary", heading_style))
+    
+    summary_data = [
+        ["Total Invoices", str(summary.get('total_invoices', 0))],
+        ["Total Quantity", str(summary.get('total_quantity', 0))],
+        ["Gross Total (N)", f"N{summary.get('total_gross', 0):,.2f}"],
+        ["Total Discount (N)", f"N{summary.get('total_discount', 0):,.2f}"],
+        ["Net Total (N)", f"N{summary.get('total_net', 0):,.2f}"]
+    ]
+    
+    summary_table = Table(summary_data, colWidths=[2*inch, 2*inch])
+    summary_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ]))
+    
+    story.append(summary_table)
+    story.append(Spacer(1, 20))
+    
+    # Breakdown by type
+    if summary.get('by_type'):
+        story.append(Paragraph("Breakdown by Invoice Type", heading_style))
+        
+        type_data = [["Invoice Type", "Count", "Total Amount (N)"]]
+        for item in summary['by_type']:
+            type_data.append([
+                item['invoice_type'].title(),
+                str(item['count']),
+                f"N{item['total_amount']:,.2f}"
+            ])
+        
+        type_table = Table(type_data, colWidths=[2*inch, 1*inch, 2*inch])
+        type_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 10),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ]))
+        
+        story.append(type_table)
+        story.append(Spacer(1, 20))
+    
+    # Top customers
+    if summary.get('top_customers'):
+        story.append(Paragraph("Top Customers", heading_style))
+        
+        customer_data = [["Customer Name", "Invoice Count", "Total Amount (N)"]]
+        for item in summary['top_customers']:
+            customer_data.append([
+                item['customer_name'],
+                str(item['invoice_count']),
+                f"N{item['total_amount']:,.2f}"
+            ])
+        
+        customer_table = Table(customer_data, colWidths=[3*inch, 1*inch, 2*inch])
+        customer_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 10),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ]))
+        
+        story.append(customer_table)
+        story.append(Spacer(1, 20))
+    
+    # Detailed invoices
+    if invoices:
+        story.append(Paragraph("Detailed Invoices", heading_style))
+        
+        # Create detailed table
+        invoice_data = [["Invoice #", "Date", "Customer", "Type", "Net Amount (N)"]]
+        for invoice in invoices:
+            invoice_data.append([
+                invoice['invoice_number'],
+                invoice['created_at'][:10],  # Just the date part
+                invoice['customer_name'][:30],  # Truncate long names
+                invoice['invoice_type'].title(),
+                f"N{invoice['net_total']:,.2f}"
+            ])
+        
+        invoice_table = Table(invoice_data, colWidths=[1.5*inch, 1*inch, 2*inch, 1*inch, 1.5*inch])
+        invoice_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 8),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ('FONTSIZE', (0, 1), (-1, -1), 8),
+            ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.lightgrey])
+        ]))
+        
+        story.append(invoice_table)
+    
+    # Footer
+    story.append(Spacer(1, 20))
+    footer_text = f"Report generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+    footer = Paragraph(footer_text, normal_style)
+    story.append(footer)
     
     # Build PDF
     doc.build(story)
