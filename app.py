@@ -309,50 +309,6 @@ def create_invoice_pdf(data, invoice_number):
     ]))
     
     story.append(company_table)
-    story.append(Spacer(1, 10))
-    
-    # Contact Information with Icons
-    contact_style = ParagraphStyle(
-        'ContactInfo',
-        parent=styles['Normal'],
-        fontSize=9,
-        textColor=colors.black,
-        alignment=TA_LEFT,
-        fontName='Helvetica',
-        spaceAfter=3
-    )
-    
-    # Create contact information with icons
-    contact_info = []
-    
-    # WhatsApp
-    whatsapp_path = "images/whatsapp.png"
-    if os.path.exists(whatsapp_path):
-        whatsapp_icon = Image(whatsapp_path, width=0.15*inch, height=0.15*inch)
-        contact_info.append(whatsapp_icon)
-    contact_info.append(Paragraph("WhatsApp: 09025977776", contact_style))
-    
-    # Phone
-    contact_info.append(Paragraph("Call: +234 803 086 7910, 07066483007", contact_style))
-    
-    # Website
-    web_path = "images/web.png"
-    if os.path.exists(web_path):
-        web_icon = Image(web_path, width=0.15*inch, height=0.15*inch)
-        contact_info.append(web_icon)
-    contact_info.append(Paragraph("Website: www.eduwavespublishers.com", contact_style))
-    
-    # Email
-    gmail_path = "images/gmail-logo.png"
-    if os.path.exists(gmail_path):
-        gmail_icon = Image(gmail_path, width=0.15*inch, height=0.15*inch)
-        contact_info.append(gmail_icon)
-    contact_info.append(Paragraph("Email: eduwavespl@gmail.com", contact_style))
-    
-    # Add contact info to story
-    for item in contact_info:
-        story.append(item)
-    
     story.append(Spacer(1, 15))
     
     # Sales Manager (top right)
@@ -531,6 +487,76 @@ def create_invoice_pdf(data, invoice_number):
     note_para = Paragraph(note_text, normal_style)
     story.append(note_para)
     story.append(Spacer(1, 20))
+    
+    # Contact Information Footer - Beautiful Design
+    contact_footer_style = ParagraphStyle(
+        'ContactFooter',
+        parent=styles['Normal'],
+        fontSize=9,
+        textColor=colors.black,
+        alignment=TA_CENTER,
+        fontName='Helvetica',
+        spaceAfter=5
+    )
+    
+    # Create a horizontal line separator
+    story.append(Spacer(1, 10))
+    line = Table([['']], colWidths=[7*inch])
+    line.setStyle(TableStyle([
+        ('LINEABOVE', (0, 0), (0, 0), 1, colors.grey),
+        ('LINEBELOW', (0, 0), (0, 0), 1, colors.grey),
+    ]))
+    story.append(line)
+    story.append(Spacer(1, 10))
+    
+    # Contact information in a neat table layout
+    contact_data = []
+    contact_row = []
+    
+    # WhatsApp
+    whatsapp_path = "images/whatsapp.png"
+    if os.path.exists(whatsapp_path):
+        whatsapp_icon = Image(whatsapp_path, width=0.2*inch, height=0.2*inch)
+        contact_row.append([whatsapp_icon, Paragraph("09025977776", contact_footer_style)])
+    else:
+        contact_row.append([Paragraph("📱", contact_footer_style), Paragraph("09025977776", contact_footer_style)])
+    
+    # Phone
+    contact_row.append([Paragraph("📞", contact_footer_style), Paragraph("+234 803 086 7910<br/>07066483007", contact_footer_style)])
+    
+    # Website
+    web_path = "images/web.png"
+    if os.path.exists(web_path):
+        web_icon = Image(web_path, width=0.2*inch, height=0.2*inch)
+        contact_row.append([web_icon, Paragraph("www.eduwavespublishers.com", contact_footer_style)])
+    else:
+        contact_row.append([Paragraph("🌐", contact_footer_style), Paragraph("www.eduwavespublishers.com", contact_footer_style)])
+    
+    # Email
+    gmail_path = "images/gmail-logo.png"
+    if os.path.exists(gmail_path):
+        gmail_icon = Image(gmail_path, width=0.2*inch, height=0.2*inch)
+        contact_row.append([gmail_icon, Paragraph("eduwavespl@gmail.com", contact_footer_style)])
+    else:
+        contact_row.append([Paragraph("✉️", contact_footer_style), Paragraph("eduwavespl@gmail.com", contact_footer_style)])
+    
+    contact_data.append(contact_row)
+    
+    # Create contact table
+    contact_table = Table(contact_data, colWidths=[1.75*inch, 1.75*inch, 1.75*inch, 1.75*inch])
+    contact_table.setStyle(TableStyle([
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('LEFTPADDING', (0, 0), (-1, -1), 5),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 5),
+        ('TOPPADDING', (0, 0), (-1, -1), 5),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.lightgrey),
+    ]))
+    
+    story.append(contact_table)
+    story.append(Spacer(1, 15))
     
     # Footer
     footer_data = [
