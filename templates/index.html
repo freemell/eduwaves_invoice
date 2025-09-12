@@ -488,11 +488,15 @@
             }
         };
 
+        // Store current search results globally
+        let currentSearchResults = [];
+
         // Book search functionality
         document.getElementById('bookSearch').addEventListener('input', function() {
             const query = this.value;
             if (query.length < 2) {
                 document.getElementById('bookResults').style.display = 'none';
+                currentSearchResults = [];
                 return;
             }
 
@@ -501,6 +505,7 @@
                 .then(books => {
                     const resultsDiv = document.getElementById('bookResults');
                     resultsDiv.innerHTML = '';
+                    currentSearchResults = books; // Store results globally
                     
                     if (books.length === 0) {
                         resultsDiv.innerHTML = '<div class="search-result-item">No books found</div>';
@@ -508,41 +513,32 @@
                         books.forEach((book, index) => {
                             const item = document.createElement('div');
                             item.className = 'search-result-item';
-                            item.setAttribute('data-book-code', book.book_code);
-                            item.setAttribute('data-book-title', book.title);
-                            item.setAttribute('data-book-price', book.price);
-                            item.setAttribute('data-book-grade', book.grade || '');
-                            item.setAttribute('data-book-subject', book.subject || '');
+                            item.setAttribute('data-book-index', index);
                             item.innerHTML = `
                                 <div><strong>${book.title}</strong></div>
                                 <div class="book-info">${book.book_code} | ${book.grade} | ${book.subject} | N${book.price.toLocaleString()}</div>
                             `;
                             resultsDiv.appendChild(item);
                         });
-                        
-                        // Add event listener to the container with event delegation
-                        resultsDiv.addEventListener('click', (e) => {
-                            const clickedItem = e.target.closest('.search-result-item');
-                            if (clickedItem && clickedItem.hasAttribute('data-book-code')) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                
-                                // Reconstruct book object from data attributes
-                                const selectedBook = {
-                                    book_code: clickedItem.getAttribute('data-book-code'),
-                                    title: clickedItem.getAttribute('data-book-title'),
-                                    price: parseFloat(clickedItem.getAttribute('data-book-price')),
-                                    grade: clickedItem.getAttribute('data-book-grade'),
-                                    subject: clickedItem.getAttribute('data-book-subject')
-                                };
-                                
-                                addBookToInvoice(selectedBook);
-                            }
-                        });
                     }
                     
                     resultsDiv.style.display = 'block';
                 });
+        });
+
+        // Single event listener for book results (using event delegation)
+        document.getElementById('bookResults').addEventListener('click', function(e) {
+            const clickedItem = e.target.closest('.search-result-item');
+            if (clickedItem && clickedItem.hasAttribute('data-book-index')) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const bookIndex = parseInt(clickedItem.getAttribute('data-book-index'));
+                if (currentSearchResults && currentSearchResults[bookIndex]) {
+                    const selectedBook = currentSearchResults[bookIndex];
+                    addBookToInvoice(selectedBook);
+                }
+            }
         });
 
         // Hide search results when clicking outside
@@ -553,6 +549,9 @@
             }
         });
 
+        // Store current customer search results globally
+        let currentCustomerResults = [];
+
         // Customer search functionality
         document.getElementById('customerSearch').addEventListener('input', function() {
             const invoiceType = document.querySelector('input[name="invoiceType"]:checked').value;
@@ -560,12 +559,14 @@
             // For floating stock, don't allow typing in customer search (it's readonly)
             if (invoiceType === 'floating') {
                 document.getElementById('customerResults').style.display = 'none';
+                currentCustomerResults = [];
                 return;
             }
             
             const query = this.value;
             if (query.length < 2) {
                 document.getElementById('customerResults').style.display = 'none';
+                currentCustomerResults = [];
                 return;
             }
 
@@ -574,44 +575,40 @@
                 .then(schools => {
                     const resultsDiv = document.getElementById('customerResults');
                     resultsDiv.innerHTML = '';
+                    currentCustomerResults = schools; // Store results globally
                     
                     if (schools.length === 0) {
                         resultsDiv.innerHTML = '<div class="search-result-item">No schools found</div>';
                     } else {
-                        schools.forEach(school => {
+                        schools.forEach((school, index) => {
                             const item = document.createElement('div');
                             item.className = 'search-result-item';
-                            item.setAttribute('data-school-name', school.name);
-                            item.setAttribute('data-school-sm', school.sm_name);
-                            item.setAttribute('data-school-phone', school.phone);
+                            item.setAttribute('data-customer-index', index);
                             item.innerHTML = `
                                 <div><strong>${school.name}</strong></div>
                                 <div class="book-info">${school.sm_name} | ${school.phone}</div>
                             `;
                             resultsDiv.appendChild(item);
                         });
-                        
-                        // Add event listener to the container with event delegation
-                        resultsDiv.addEventListener('click', (e) => {
-                            const clickedItem = e.target.closest('.search-result-item');
-                            if (clickedItem && clickedItem.hasAttribute('data-school-name')) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                
-                                // Reconstruct school object from data attributes
-                                const selectedSchool = {
-                                    name: clickedItem.getAttribute('data-school-name'),
-                                    sm_name: clickedItem.getAttribute('data-school-sm'),
-                                    phone: clickedItem.getAttribute('data-school-phone')
-                                };
-                                
-                                selectCustomer(selectedSchool);
-                            }
-                        });
                     }
                     
                     resultsDiv.style.display = 'block';
                 });
+        });
+
+        // Single event listener for customer results (using event delegation)
+        document.getElementById('customerResults').addEventListener('click', function(e) {
+            const clickedItem = e.target.closest('.search-result-item');
+            if (clickedItem && clickedItem.hasAttribute('data-customer-index')) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const customerIndex = parseInt(clickedItem.getAttribute('data-customer-index'));
+                if (currentCustomerResults && currentCustomerResults[customerIndex]) {
+                    const selectedSchool = currentCustomerResults[customerIndex];
+                    selectCustomer(selectedSchool);
+                }
+            }
         });
 
         // Add book to invoice
@@ -639,6 +636,7 @@
             document.getElementById('bookSearch').value = '';
             document.getElementById('bookResults').innerHTML = '';
             document.getElementById('bookResults').style.display = 'none';
+            currentSearchResults = []; // Clear stored results
         }
 
         // Clear form function
@@ -648,14 +646,16 @@
             updateItemsTable();
             updateTotals();
             
-            // Clear search fields
+            // Clear search fields and results
             document.getElementById('bookSearch').value = '';
             document.getElementById('bookResults').innerHTML = '';
             document.getElementById('bookResults').style.display = 'none';
+            currentSearchResults = []; // Clear stored results
             
             document.getElementById('customerSearch').value = '';
             document.getElementById('customerResults').innerHTML = '';
             document.getElementById('customerResults').style.display = 'none';
+            currentCustomerResults = []; // Clear stored results
             
             // Clear customer details
             document.getElementById('customerPhone').value = '';
@@ -688,12 +688,14 @@
                 document.getElementById('salesManager').value = school.sm_name;
                 document.getElementById('customerPhone').value = school.phone;
                 document.getElementById('customerResults').style.display = 'none';
+                currentCustomerResults = []; // Clear stored results
             } else {
                 // For other types, update all fields
                 document.getElementById('customerSearch').value = school.name;
                 document.getElementById('customerPhone').value = school.phone;
                 document.getElementById('salesManager').value = school.sm_name;
                 document.getElementById('customerResults').style.display = 'none';
+                currentCustomerResults = []; // Clear stored results
                 
                 // Show a note that fields are editable
                 if (!document.getElementById('editableNote')) {
