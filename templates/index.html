@@ -505,19 +505,39 @@
                     if (books.length === 0) {
                         resultsDiv.innerHTML = '<div class="search-result-item">No books found</div>';
                     } else {
-                        books.forEach(book => {
+                        books.forEach((book, index) => {
                             const item = document.createElement('div');
                             item.className = 'search-result-item';
+                            item.setAttribute('data-book-code', book.book_code);
+                            item.setAttribute('data-book-title', book.title);
+                            item.setAttribute('data-book-price', book.price);
+                            item.setAttribute('data-book-grade', book.grade || '');
+                            item.setAttribute('data-book-subject', book.subject || '');
                             item.innerHTML = `
                                 <div><strong>${book.title}</strong></div>
                                 <div class="book-info">${book.book_code} | ${book.grade} | ${book.subject} | N${book.price.toLocaleString()}</div>
                             `;
-                            item.addEventListener('click', (e) => {
+                            resultsDiv.appendChild(item);
+                        });
+                        
+                        // Add event listener to the container with event delegation
+                        resultsDiv.addEventListener('click', (e) => {
+                            const clickedItem = e.target.closest('.search-result-item');
+                            if (clickedItem && clickedItem.hasAttribute('data-book-code')) {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                addBookToInvoice(book);
-                            });
-                            resultsDiv.appendChild(item);
+                                
+                                // Reconstruct book object from data attributes
+                                const selectedBook = {
+                                    book_code: clickedItem.getAttribute('data-book-code'),
+                                    title: clickedItem.getAttribute('data-book-title'),
+                                    price: parseFloat(clickedItem.getAttribute('data-book-price')),
+                                    grade: clickedItem.getAttribute('data-book-grade'),
+                                    subject: clickedItem.getAttribute('data-book-subject')
+                                };
+                                
+                                addBookToInvoice(selectedBook);
+                            }
                         });
                     }
                     
@@ -561,16 +581,32 @@
                         schools.forEach(school => {
                             const item = document.createElement('div');
                             item.className = 'search-result-item';
+                            item.setAttribute('data-school-name', school.name);
+                            item.setAttribute('data-school-sm', school.sm_name);
+                            item.setAttribute('data-school-phone', school.phone);
                             item.innerHTML = `
                                 <div><strong>${school.name}</strong></div>
                                 <div class="book-info">${school.sm_name} | ${school.phone}</div>
                             `;
-                            item.addEventListener('click', (e) => {
+                            resultsDiv.appendChild(item);
+                        });
+                        
+                        // Add event listener to the container with event delegation
+                        resultsDiv.addEventListener('click', (e) => {
+                            const clickedItem = e.target.closest('.search-result-item');
+                            if (clickedItem && clickedItem.hasAttribute('data-school-name')) {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                selectCustomer(school);
-                            });
-                            resultsDiv.appendChild(item);
+                                
+                                // Reconstruct school object from data attributes
+                                const selectedSchool = {
+                                    name: clickedItem.getAttribute('data-school-name'),
+                                    sm_name: clickedItem.getAttribute('data-school-sm'),
+                                    phone: clickedItem.getAttribute('data-school-phone')
+                                };
+                                
+                                selectCustomer(selectedSchool);
+                            }
                         });
                     }
                     
@@ -580,15 +616,20 @@
 
         // Add book to invoice
         function addBookToInvoice(book) {
+            console.log('Adding book to invoice:', book); // Debug log
+            
             // Check if book already exists
             const existingItem = selectedItems.find(item => item.book_code === book.book_code);
             if (existingItem) {
                 existingItem.quantity += 1;
+                console.log('Increased quantity for existing book:', existingItem.book_code, 'New quantity:', existingItem.quantity);
             } else {
-                selectedItems.push({
+                const newItem = {
                     ...book,
                     quantity: 1
-                });
+                };
+                selectedItems.push(newItem);
+                console.log('Added new book:', newItem.book_code, 'Title:', newItem.title);
             }
             
             updateItemsTable();
