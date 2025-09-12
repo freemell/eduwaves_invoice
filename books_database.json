@@ -1,6 +1,6 @@
 [
   {
-    "book_code": "GEN/P1/HALE",
+    "book_code": "GEN/P1/HAPLEA/M",
     "title": "HAPPY LEARNERS MATHS BK 1",
     "grade": "Primary 1",
     "price": 2300.0,
@@ -8,7 +8,7 @@
     "search_terms": "happy learners maths bk 1 primary 1 📐 mathematics"
   },
   {
-    "book_code": "GEN/P2/HALE",
+    "book_code": "GEN/P2/HAPLEA/M",
     "title": "HAPPY LEARNERS MATHS BK 2",
     "grade": "Primary 2",
     "price": 2300.0,
@@ -16,7 +16,7 @@
     "search_terms": "happy learners maths bk 2 primary 2 📐 mathematics"
   },
   {
-    "book_code": "GEN/P3/HALE",
+    "book_code": "GEN/P3/HAPLEA/M",
     "title": "HAPPY LEARNERS MATHS BK 3",
     "grade": "Primary 3",
     "price": 2300.0,
@@ -24,7 +24,7 @@
     "search_terms": "happy learners maths bk 3 primary 3 📐 mathematics"
   },
   {
-    "book_code": "GEN/P1/PRDI",
+    "book_code": "GEN/P1/PRYDIG/M",
     "title": "PRY DIGITAL MATHS BK 1",
     "grade": "Primary 1",
     "price": 4200.0,
@@ -32,7 +32,7 @@
     "search_terms": "pry digital maths bk 1 primary 1 📐 mathematics"
   },
   {
-    "book_code": "GEN/P2/PRDI",
+    "book_code": "GEN/P2/PRYDIG/M",
     "title": "PRY DIGITAL MATHS BK 2",
     "grade": "Primary 2",
     "price": 4200.0,
@@ -40,7 +40,7 @@
     "search_terms": "pry digital maths bk 2 primary 2 📐 mathematics"
   },
   {
-    "book_code": "GEN/P3/PRDI",
+    "book_code": "GEN/P3/PRYDIG/M",
     "title": "PRY DIGITAL MATHS BK 3",
     "grade": "Primary 3",
     "price": 4200.0,
@@ -48,7 +48,7 @@
     "search_terms": "pry digital maths bk 3 primary 3 📐 mathematics"
   },
   {
-    "book_code": "GEN/P4/PRDI",
+    "book_code": "GEN/P4/PRYDIG/M",
     "title": "PRY DIGITAL MATHS BK 4",
     "grade": "Primary 4",
     "price": 4200.0,
@@ -56,7 +56,7 @@
     "search_terms": "pry digital maths bk 4 primary 4 📐 mathematics"
   },
   {
-    "book_code": "GEN/P5/PRDI",
+    "book_code": "GEN/P5/PRYDIG/M",
     "title": "PRY DIGITAL MATHS BK 5",
     "grade": "Primary 5",
     "price": 4200.0,
@@ -64,7 +64,7 @@
     "search_terms": "pry digital maths bk 5 primary 5 📐 mathematics"
   },
   {
-    "book_code": "GEN/P6/PRDI",
+    "book_code": "GEN/P6/PRYDIG/M",
     "title": "PRY DIGITAL MATHS BK 6",
     "grade": "Primary 6",
     "price": 4200.0,
@@ -72,7 +72,7 @@
     "search_terms": "pry digital maths bk 6 primary 6 📐 mathematics"
   },
   {
-    "book_code": "GEN/P1/HALE",
+    "book_code": "GEN/P1/HAPLEA/E",
     "title": "HAPPY LEARNERS ENG BK 1",
     "grade": "Primary 1",
     "price": 2300.0,
@@ -80,7 +80,7 @@
     "search_terms": "happy learners eng bk 1 primary 1 📖 english language"
   },
   {
-    "book_code": "GEN/P2/HALE",
+    "book_code": "GEN/P2/HAPLEA/E",
     "title": "HAPPY LEARNERS ENG BK 2",
     "grade": "Primary 2",
     "price": 2300.0,
@@ -88,7 +88,7 @@
     "search_terms": "happy learners eng bk 2 primary 2 📖 english language"
   },
   {
-    "book_code": "GEN/P3/HALE",
+    "book_code": "GEN/P3/HAPLEA/E",
     "title": "HAPPY LEARNERS ENG. BK 3",
     "grade": "Primary 3",
     "price": 2300.0,
@@ -96,7 +96,7 @@
     "search_terms": "happy learners eng. bk 3 primary 3 📖 english language"
   },
   {
-    "book_code": "GEN/P1/PRPR",
+    "book_code": "GEN/P1/PRYPRO/E",
     "title": "PRY PROPER ENG BK 1",
     "grade": "Primary 1",
     "price": 4300.0,
@@ -104,7 +104,7 @@
     "search_terms": "pry proper eng bk 1 primary 1 📖 english language"
   },
   {
-    "book_code": "GEN/P2/PRPR",
+    "book_code": "GEN/P2/PRYPRO/E",
     "title": "PRY PROPER ENG BK 2",
     "grade": "Primary 2",
     "price": 4300.0,
@@ -112,7 +112,7 @@
     "search_terms": "pry proper eng bk 2 primary 2 📖 english language"
   },
   {
-    "book_code": "GEN/P3/PRPR",
+    "book_code": "GEN/P3/PRYPRO/E",
     "title": "PRY PROPER ENG BK 3",
     "grade": "Primary 3",
     "price": 4300.0,
@@ -120,7 +120,7 @@
     "search_terms": "pry proper eng bk 3 primary 3 📖 english language"
   },
   {
-    "book_code": "GEN/P4/PRPR",
+    "book_code": "GEN/P4/PRYPRO/E",
     "title": "PRY PROPER ENG BK 4",
     "grade": "Primary 4",
     "price": 4300.0,
@@ -128,7 +128,7 @@
     "search_terms": "pry proper eng bk 4 primary 4 📖 english language"
   },
   {
-    "book_code": "GEN/P5/PRPR",
+    "book_code": "GEN/P5/PRYPRO/E",
     "title": "PRY PROPER ENG BK 5",
     "grade": "Primary 5",
     "price": 4300.0,
@@ -136,7 +136,7 @@
     "search_terms": "pry proper eng bk 5 primary 5 📖 english language"
   },
   {
-    "book_code": "GEN/P6/PRPR",
+    "book_code": "GEN/P6/PRYPRO/E",
     "title": "PRY PROPER ENG BK 6",
     "grade": "Primary 6",
     "price": 4300.0,
@@ -144,7 +144,7 @@
     "search_terms": "pry proper eng bk 6 primary 6 📖 english language"
   },
   {
-    "book_code": "GEN/P1/PRBA",
+    "book_code": "GEN/P1/PRYBAS/S",
     "title": "PRY BASIC SCIENCE & TECH. BK 1",
     "grade": "Primary 1",
     "price": 2550.0,
@@ -152,7 +152,7 @@
     "search_terms": "pry basic science & tech. bk 1 primary 1 🔬 basic science & technology"
   },
   {
-    "book_code": "GEN/P2/PRBA",
+    "book_code": "GEN/P2/PRYBAS/S",
     "title": "PRY BASIC SCIENCE & TECH. BK 2",
     "grade": "Primary 2",
     "price": 2550.0,
@@ -160,7 +160,7 @@
     "search_terms": "pry basic science & tech. bk 2 primary 2 🔬 basic science & technology"
   },
   {
-    "book_code": "GEN/P3/PRBA",
+    "book_code": "GEN/P3/PRYBAS/S",
     "title": "PRY BASIC SCIENCE & TECH. BK 3",
     "grade": "Primary 3",
     "price": 2550.0,
@@ -168,7 +168,7 @@
     "search_terms": "pry basic science & tech. bk 3 primary 3 🔬 basic science & technology"
   },
   {
-    "book_code": "GEN/P4/PRBA",
+    "book_code": "GEN/P4/PRYBAS/S",
     "title": "PRY BASIC SCIENCE & TECH. BK 4",
     "grade": "Primary 4",
     "price": 2550.0,
@@ -176,7 +176,7 @@
     "search_terms": "pry basic science & tech. bk 4 primary 4 🔬 basic science & technology"
   },
   {
-    "book_code": "GEN/P5/PRBA",
+    "book_code": "GEN/P5/PRYBAS/S",
     "title": "PRY BASIC SCIENCE & TECH. BK 5",
     "grade": "Primary 5",
     "price": 2550.0,
@@ -184,7 +184,7 @@
     "search_terms": "pry basic science & tech. bk 5 primary 5 🔬 basic science & technology"
   },
   {
-    "book_code": "GEN/P6/PRBA",
+    "book_code": "GEN/P6/PRYBAS/S",
     "title": "PRY BASIC SCIENCE & TECH. BK 6",
     "grade": "Primary 6",
     "price": 2550.0,
@@ -192,7 +192,7 @@
     "search_terms": "pry basic science & tech. bk 6 primary 6 🔬 basic science & technology"
   },
   {
-    "book_code": "GEN/P1/HALE",
+    "book_code": "GEN/P1/HAPLEA/C",
     "title": "HAPPY LEARNERS COMPUTER BOOK 1",
     "grade": "Primary 1",
     "price": 2300.0,
@@ -200,7 +200,7 @@
     "search_terms": "happy learners computer book 1 primary 1 💻 computer studies"
   },
   {
-    "book_code": "GEN/P2/HALE",
+    "book_code": "GEN/P2/HAPLEA/C",
     "title": "HAPPY LEARNERS COMPUTER BOOK 2",
     "grade": "Primary 2",
     "price": 2300.0,
@@ -208,7 +208,7 @@
     "search_terms": "happy learners computer book 2 primary 2 💻 computer studies"
   },
   {
-    "book_code": "GEN/P3/HALE",
+    "book_code": "GEN/P3/HAPLEA/C",
     "title": "HAPPY LEARNERS COMPUTER BOOK 3",
     "grade": "Primary 3",
     "price": 2300.0,
@@ -216,7 +216,7 @@
     "search_terms": "happy learners computer book 3 primary 3 💻 computer studies"
   },
   {
-    "book_code": "GEN/P1/PRCO",
+    "book_code": "GEN/P1/PRYCOM/C",
     "title": "PRY COMPUTER BK 1",
     "grade": "Primary 1",
     "price": 2300.0,
@@ -224,7 +224,7 @@
     "search_terms": "pry computer bk 1 primary 1 💻 computer studies"
   },
   {
-    "book_code": "GEN/P2/PRCO",
+    "book_code": "GEN/P2/PRYCOM/C",
     "title": "PRY COMPUTER BK 2",
     "grade": "Primary 2",
     "price": 2300.0,
@@ -232,7 +232,7 @@
     "search_terms": "pry computer bk 2 primary 2 💻 computer studies"
   },
   {
-    "book_code": "GEN/P3/PRCO",
+    "book_code": "GEN/P3/PRYCOM/C",
     "title": "PRY COMPUTER BK 3",
     "grade": "Primary 3",
     "price": 2300.0,
@@ -240,7 +240,7 @@
     "search_terms": "pry computer bk 3 primary 3 💻 computer studies"
   },
   {
-    "book_code": "GEN/P4/PRCO",
+    "book_code": "GEN/P4/PRYCOM/C",
     "title": "PRY COMPUTER BK 4",
     "grade": "Primary 4",
     "price": 2300.0,
@@ -248,7 +248,7 @@
     "search_terms": "pry computer bk 4 primary 4 💻 computer studies"
   },
   {
-    "book_code": "GEN/P5/PRCO",
+    "book_code": "GEN/P5/PRYCOM/C",
     "title": "PRY COMPUTER BK 5",
     "grade": "Primary 5",
     "price": 2300.0,
@@ -256,7 +256,7 @@
     "search_terms": "pry computer bk 5 primary 5 💻 computer studies"
   },
   {
-    "book_code": "GEN/P6/PRCO",
+    "book_code": "GEN/P6/PRYCOM/C",
     "title": "PRY COMPUTER BK 6",
     "grade": "Primary 6",
     "price": 2300.0,
@@ -264,7 +264,7 @@
     "search_terms": "pry computer bk 6 primary 6 💻 computer studies"
   },
   {
-    "book_code": "GEN/P1/PRNA",
+    "book_code": "GEN/P1/PRYNAT/N",
     "title": "PRY NATIONAL VALUE EDUCATION PRY. BK 1",
     "grade": "Primary 1",
     "price": 2500.0,
@@ -272,7 +272,7 @@
     "search_terms": "pry national value education pry. bk 1 primary 1 🏛️ national values education"
   },
   {
-    "book_code": "GEN/P2/PRNA",
+    "book_code": "GEN/P2/PRYNAT/N",
     "title": "PRY NATIONAL VALUE EDUCATION PRY. BK 2",
     "grade": "Primary 2",
     "price": 2500.0,
@@ -280,7 +280,7 @@
     "search_terms": "pry national value education pry. bk 2 primary 2 🏛️ national values education"
   },
   {
-    "book_code": "GEN/P3/PRNA",
+    "book_code": "GEN/P3/PRYNAT/N",
     "title": "PRY NATIONAL VALUE EDUCATION PRY. BK 3",
     "grade": "Primary 3",
     "price": 2500.0,
@@ -288,7 +288,7 @@
     "search_terms": "pry national value education pry. bk 3 primary 3 🏛️ national values education"
   },
   {
-    "book_code": "GEN/P4/PRNA",
+    "book_code": "GEN/P4/PRYNAT/N",
     "title": "PRY NATIONAL VALUE EDUCATION PRY. BK 4",
     "grade": "Primary 4",
     "price": 2500.0,
@@ -296,7 +296,7 @@
     "search_terms": "pry national value education pry. bk 4 primary 4 🏛️ national values education"
   },
   {
-    "book_code": "GEN/P5/PRNA",
+    "book_code": "GEN/P5/PRYNAT/N",
     "title": "PRY NATIONAL VALUE EDUCATION PRY. BK 5",
     "grade": "Primary 5",
     "price": 2500.0,
@@ -304,7 +304,7 @@
     "search_terms": "pry national value education pry. bk 5 primary 5 🏛️ national values education"
   },
   {
-    "book_code": "GEN/P6/PRNA",
+    "book_code": "GEN/P6/PRYNAT/N",
     "title": "PRY NATIONAL VALUE EDUCATION PRY. BK 6",
     "grade": "Primary 6",
     "price": 2500.0,
@@ -312,7 +312,7 @@
     "search_terms": "pry national value education pry. bk 6 primary 6 🏛️ national values education"
   },
   {
-    "book_code": "GEN/P1/PRHI",
+    "book_code": "GEN/P1/PRYHIS/X",
     "title": "PRY HISTORY BK 1",
     "grade": "Primary 1",
     "price": 2150.0,
@@ -320,7 +320,7 @@
     "search_terms": "pry history bk 1 primary 1 📚 history"
   },
   {
-    "book_code": "GEN/P2/PRHI",
+    "book_code": "GEN/P2/PRYHIS/X",
     "title": "PRY HISTORY BK 2",
     "grade": "Primary 2",
     "price": 2150.0,
@@ -328,7 +328,7 @@
     "search_terms": "pry history bk 2 primary 2 📚 history"
   },
   {
-    "book_code": "GEN/P3/PRHI",
+    "book_code": "GEN/P3/PRYHIS/X",
     "title": "PRY HISTORY BK 3",
     "grade": "Primary 3",
     "price": 2150.0,
@@ -336,7 +336,7 @@
     "search_terms": "pry history bk 3 primary 3 📚 history"
   },
   {
-    "book_code": "GEN/P4/PRHI",
+    "book_code": "GEN/P4/PRYHIS/X",
     "title": "PRY HISTORY BK 4",
     "grade": "Primary 4",
     "price": 2150.0,
@@ -344,7 +344,7 @@
     "search_terms": "pry history bk 4 primary 4 📚 history"
   },
   {
-    "book_code": "GEN/P5/PRHI",
+    "book_code": "GEN/P5/PRYHIS/X",
     "title": "PRY HISTORY BK 5",
     "grade": "Primary 5",
     "price": 2150.0,
@@ -352,7 +352,7 @@
     "search_terms": "pry history bk 5 primary 5 📚 history"
   },
   {
-    "book_code": "GEN/P6/PRHI",
+    "book_code": "GEN/P6/PRYHIS/X",
     "title": "PRY HISTORY BOOK 6",
     "grade": "Primary 6",
     "price": 2150.0,
@@ -360,7 +360,7 @@
     "search_terms": "pry history book 6 primary 6 📚 history"
   },
   {
-    "book_code": "GEN/P1/HALE",
+    "book_code": "GEN/P1/HAPLEA/Q",
     "title": "HAPPY LEARNERS QUANTITATIVE APTITUDE BOOK 1",
     "grade": "Primary 1",
     "price": 2100.0,
@@ -368,7 +368,7 @@
     "search_terms": "happy learners quantitative aptitude book 1 primary 1 🧮 quantitative reasoning"
   },
   {
-    "book_code": "GEN/P2/HALE",
+    "book_code": "GEN/P2/HAPLEA/Q",
     "title": "HAPPY LEARNERS QUANTITATIVE APTITUDE BOOK 2",
     "grade": "Primary 2",
     "price": 2100.0,
@@ -376,7 +376,7 @@
     "search_terms": "happy learners quantitative aptitude book 2 primary 2 🧮 quantitative reasoning"
   },
   {
-    "book_code": "GEN/P3/HALE",
+    "book_code": "GEN/P3/HAPLEA/Q",
     "title": "HAPPY LEARNERS QUANTITATIVE APTITUDE BOOK 3",
     "grade": "Primary 3",
     "price": 2100.0,
@@ -384,7 +384,7 @@
     "search_terms": "happy learners quantitative aptitude book 3 primary 3 🧮 quantitative reasoning"
   },
   {
-    "book_code": "GEN/P1/PRQU",
+    "book_code": "GEN/P1/PRYQUA/Q",
     "title": "PRY QUANTITATIVE REASONING BK 1",
     "grade": "Primary 1",
     "price": 2150.0,
@@ -392,7 +392,7 @@
     "search_terms": "pry quantitative reasoning bk 1 primary 1 🧮 quantitative reasoning"
   },
   {
-    "book_code": "GEN/P2/PRQU",
+    "book_code": "GEN/P2/PRYQUA/Q",
     "title": "PRY QUANTITATIVE REASONING BK 2",
     "grade": "Primary 2",
     "price": 2150.0,
@@ -400,7 +400,7 @@
     "search_terms": "pry quantitative reasoning bk 2 primary 2 🧮 quantitative reasoning"
   },
   {
-    "book_code": "GEN/P3/PRQU",
+    "book_code": "GEN/P3/PRYQUA/Q",
     "title": "PRY QUANTITATIVE REASONING BK 3",
     "grade": "Primary 3",
     "price": 2150.0,
@@ -408,7 +408,7 @@
     "search_terms": "pry quantitative reasoning bk 3 primary 3 🧮 quantitative reasoning"
   },
   {
-    "book_code": "GEN/P4/PRQU",
+    "book_code": "GEN/P4/PRYQUA/Q",
     "title": "PRY QUANTITATIVE REASONING BK 4",
     "grade": "Primary 4",
     "price": 2150.0,
@@ -416,7 +416,7 @@
     "search_terms": "pry quantitative reasoning bk 4 primary 4 🧮 quantitative reasoning"
   },
   {
-    "book_code": "GEN/P5/PRQU",
+    "book_code": "GEN/P5/PRYQUA/Q",
     "title": "PRY QUANTITATIVE REASONING BK 5",
     "grade": "Primary 5",
     "price": 2150.0,
@@ -424,7 +424,7 @@
     "search_terms": "pry quantitative reasoning bk 5 primary 5 🧮 quantitative reasoning"
   },
   {
-    "book_code": "GEN/P6/PRQU",
+    "book_code": "GEN/P6/PRYQUA/Q",
     "title": "PRY QUANTITATIVE REASONING BK 6",
     "grade": "Primary 6",
     "price": 2150.0,
@@ -432,7 +432,7 @@
     "search_terms": "pry quantitative reasoning bk 6 primary 6 🧮 quantitative reasoning"
   },
   {
-    "book_code": "GEN/P1/HALE",
+    "book_code": "GEN/P1/HAPLEA/V",
     "title": "HAPPY LEARNERS VERBAL APTITUDE BOOK 1",
     "grade": "Primary 1",
     "price": 2100.0,
@@ -440,7 +440,7 @@
     "search_terms": "happy learners verbal aptitude book 1 primary 1 🗣️ verbal reasoning"
   },
   {
-    "book_code": "GEN/P2/HALE",
+    "book_code": "GEN/P2/HAPLEA/V",
     "title": "HAPPY LEARNERS VERBAL APTITUDE BOOK 2",
     "grade": "Primary 2",
     "price": 2100.0,
@@ -448,7 +448,7 @@
     "search_terms": "happy learners verbal aptitude book 2 primary 2 🗣️ verbal reasoning"
   },
   {
-    "book_code": "GEN/P3/HALE",
+    "book_code": "GEN/P3/HAPLEA/V",
     "title": "HAPPY LEARNERS VERBAL APTITUDE BOOK 3",
     "grade": "Primary 3",
     "price": 2100.0,
@@ -456,7 +456,7 @@
     "search_terms": "happy learners verbal aptitude book 3 primary 3 🗣️ verbal reasoning"
   },
   {
-    "book_code": "GEN/P1/PRVE",
+    "book_code": "GEN/P1/PRYVER/V",
     "title": "PRY VERBAL REASONING BK 1",
     "grade": "Primary 1",
     "price": 2150.0,
@@ -464,7 +464,7 @@
     "search_terms": "pry verbal reasoning bk 1 primary 1 🗣️ verbal reasoning"
   },
   {
-    "book_code": "GEN/P2/PRVE",
+    "book_code": "GEN/P2/PRYVER/V",
     "title": "PRY VERBAL REASONING BK 2",
     "grade": "Primary 2",
     "price": 2150.0,
@@ -472,7 +472,7 @@
     "search_terms": "pry verbal reasoning bk 2 primary 2 🗣️ verbal reasoning"
   },
   {
-    "book_code": "GEN/P3/PRVE",
+    "book_code": "GEN/P3/PRYVER/V",
     "title": "PRY VERBAL REASONING BK 3",
     "grade": "Primary 3",
     "price": 2150.0,
@@ -480,7 +480,7 @@
     "search_terms": "pry verbal reasoning bk 3 primary 3 🗣️ verbal reasoning"
   },
   {
-    "book_code": "GEN/P4/PRVE",
+    "book_code": "GEN/P4/PRYVER/V",
     "title": "PRY VERBAL REASONING BK 4",
     "grade": "Primary 4",
     "price": 2150.0,
@@ -488,7 +488,7 @@
     "search_terms": "pry verbal reasoning bk 4 primary 4 🗣️ verbal reasoning"
   },
   {
-    "book_code": "GEN/P5/PRVE",
+    "book_code": "GEN/P5/PRYVER/V",
     "title": "PRY VERBAL REASONING BK 5",
     "grade": "Primary 5",
     "price": 2150.0,
@@ -496,7 +496,7 @@
     "search_terms": "pry verbal reasoning bk 5 primary 5 🗣️ verbal reasoning"
   },
   {
-    "book_code": "GEN/P6/PRVE",
+    "book_code": "GEN/P6/PRYVER/V",
     "title": "PRY VERBAL REASONING BK 6",
     "grade": "Primary 6",
     "price": 2150.0,
@@ -504,7 +504,7 @@
     "search_terms": "pry verbal reasoning bk 6 primary 6 🗣️ verbal reasoning"
   },
   {
-    "book_code": "GEN/P1/HALE",
+    "book_code": "GEN/P1/HAPLEA/W",
     "title": "HAPPY LEARNERS SKILLFUL WRITING BOOK 1",
     "grade": "Primary 1",
     "price": 2100.0,
@@ -512,7 +512,7 @@
     "search_terms": "happy learners skillful writing book 1 primary 1 ✍️ writing skills"
   },
   {
-    "book_code": "GEN/P2/HALE",
+    "book_code": "GEN/P2/HAPLEA/W",
     "title": "HAPPY LEARNERS SKILLFUL WRITING BOOK 2",
     "grade": "Primary 2",
     "price": 2100.0,
@@ -520,7 +520,7 @@
     "search_terms": "happy learners skillful writing book 2 primary 2 ✍️ writing skills"
   },
   {
-    "book_code": "GEN/P3/HALE",
+    "book_code": "GEN/P3/HAPLEA/W",
     "title": "HAPPY LEARNERS SKILLFUL WRITING BOOK 3",
     "grade": "Primary 3",
     "price": 2100.0,
@@ -528,7 +528,7 @@
     "search_terms": "happy learners skillful writing book 3 primary 3 ✍️ writing skills"
   },
   {
-    "book_code": "GEN/P1/HALE",
+    "book_code": "GEN/P1/HAPLEA/H",
     "title": "HAPPY LEARNERS HEALTH HABITS BK 1",
     "grade": "Primary 1",
     "price": 2300.0,
@@ -536,7 +536,7 @@
     "search_terms": "happy learners health habits bk 1 primary 1 🏥 health education"
   },
   {
-    "book_code": "GEN/P2/HALE",
+    "book_code": "GEN/P2/HAPLEA/H",
     "title": "HAPPY LEARNERS HEALTH HABITS BK 2",
     "grade": "Primary 2",
     "price": 2300.0,
@@ -544,7 +544,7 @@
     "search_terms": "happy learners health habits bk 2 primary 2 🏥 health education"
   },
   {
-    "book_code": "GEN/P3/HALE",
+    "book_code": "GEN/P3/HAPLEA/H",
     "title": "HAPPY LEARNERS HEALTH HABITS BOOK 3",
     "grade": "Primary 3",
     "price": 2300.0,
@@ -552,7 +552,7 @@
     "search_terms": "happy learners health habits book 3 primary 3 🏥 health education"
   },
   {
-    "book_code": "GEN/P1/HALE",
+    "book_code": "GEN/P1/HAPLEA/S",
     "title": "HAPPY LEARNERS SOCIAL HABITS BK 1",
     "grade": "Primary 1",
     "price": 2300.0,
@@ -560,7 +560,7 @@
     "search_terms": "happy learners social habits bk 1 primary 1 🌍 social studies"
   },
   {
-    "book_code": "GEN/P2/HALE",
+    "book_code": "GEN/P2/HAPLEA/S",
     "title": "HAPPY LEARNERS SOCIAL HABITS BK 2",
     "grade": "Primary 2",
     "price": 2300.0,
@@ -568,7 +568,7 @@
     "search_terms": "happy learners social habits bk 2 primary 2 🌍 social studies"
   },
   {
-    "book_code": "GEN/P3/HALE",
+    "book_code": "GEN/P3/HAPLEA/S",
     "title": "HAPPY LEARNERS SOCIAL HABITS BK 3",
     "grade": "Primary 3",
     "price": 2300.0,
@@ -576,7 +576,7 @@
     "search_terms": "happy learners social habits bk 3 primary 3 🌍 social studies"
   },
   {
-    "book_code": "GEN/J1/JSIM",
+    "book_code": "GEN/J1/JSSIMP/E",
     "title": "JSS IMPECCABLE ENGLISH BK 1",
     "grade": "JSS 1",
     "price": 4400.0,
@@ -584,7 +584,7 @@
     "search_terms": "jss impeccable english bk 1 jss 1 📖 english language"
   },
   {
-    "book_code": "GEN/J2/JSIM",
+    "book_code": "GEN/J2/JSSIMP/E",
     "title": "JSS IMPECCABLE ENGLISH BK 2",
     "grade": "JSS 2",
     "price": 4400.0,
@@ -592,7 +592,7 @@
     "search_terms": "jss impeccable english bk 2 jss 2 📖 english language"
   },
   {
-    "book_code": "GEN/J3/JSIM",
+    "book_code": "GEN/J3/JSSIMP/E",
     "title": "JSS IMPECCABLE ENGLISH BK 3",
     "grade": "JSS 3",
     "price": 4400.0,
@@ -600,7 +600,7 @@
     "search_terms": "jss impeccable english bk 3 jss 3 📖 english language"
   },
   {
-    "book_code": "GEN/J1/JSMA",
+    "book_code": "GEN/J1/JSSMAM/M",
     "title": "JSS MATHEMATICS BK 1",
     "grade": "JSS 1",
     "price": 4400.0,
@@ -608,7 +608,7 @@
     "search_terms": "jss mathematics bk 1 jss 1 📐 mathematics"
   },
   {
-    "book_code": "GEN/J2/JSMA",
+    "book_code": "GEN/J2/JSSMAM/M",
     "title": "JSS MATHEMATICS BK 2",
     "grade": "JSS 2",
     "price": 4400.0,
@@ -616,7 +616,7 @@
     "search_terms": "jss mathematics bk 2 jss 2 📐 mathematics"
   },
   {
-    "book_code": "GEN/J3/JSMA",
+    "book_code": "GEN/J3/JSSMAM/M",
     "title": "JSS MATHEMATICS BK 3",
     "grade": "JSS 3",
     "price": 4400.0,
@@ -624,7 +624,7 @@
     "search_terms": "jss mathematics bk 3 jss 3 📐 mathematics"
   },
   {
-    "book_code": "GEN/J1/JSBA",
+    "book_code": "GEN/J1/JSSBAS/S",
     "title": "JSS BASIC SCI. & TECH BK 1",
     "grade": "JSS 1",
     "price": 3000.0,
@@ -632,7 +632,7 @@
     "search_terms": "jss basic sci. & tech bk 1 jss 1 🔬 basic science & technology"
   },
   {
-    "book_code": "GEN/J2/JSBA",
+    "book_code": "GEN/J2/JSSBAS/S",
     "title": "JSS BASIC SCI. & TECH BK 2",
     "grade": "JSS 2",
     "price": 3000.0,
@@ -640,7 +640,7 @@
     "search_terms": "jss basic sci. & tech bk 2 jss 2 🔬 basic science & technology"
   },
   {
-    "book_code": "GEN/J3/JSBA",
+    "book_code": "GEN/J3/JSSBAS/S",
     "title": "JSS BASIC SCI. & TECH BK 3",
     "grade": "JSS 3",
     "price": 3000.0,
@@ -648,7 +648,7 @@
     "search_terms": "jss basic sci. & tech bk 3 jss 3 🔬 basic science & technology"
   },
   {
-    "book_code": "GEN/J1/JSNA",
+    "book_code": "GEN/J1/JSSNAT/N",
     "title": "JSS NATIONAL VALUES EDUCATION BK 1",
     "grade": "JSS 1",
     "price": 3050.0,
@@ -656,7 +656,7 @@
     "search_terms": "jss national values education bk 1 jss 1 🏛️ national values education"
   },
   {
-    "book_code": "GEN/J2/JSNA",
+    "book_code": "GEN/J2/JSSNAT/N",
     "title": "JSS NATIONAL VALUES EDUCATION BK 2",
     "grade": "JSS 2",
     "price": 3050.0,
@@ -664,7 +664,7 @@
     "search_terms": "jss national values education bk 2 jss 2 🏛️ national values education"
   },
   {
-    "book_code": "GEN/J3/JSNA",
+    "book_code": "GEN/J3/JSSNAT/N",
     "title": "JSS NATIONAL VALUES EDUCATION BK 3",
     "grade": "JSS 3",
     "price": 3050.0,
@@ -672,7 +672,7 @@
     "search_terms": "jss national values education bk 3 jss 3 🏛️ national values education"
   },
   {
-    "book_code": "GEN/J1/JSHI",
+    "book_code": "GEN/J1/JSSHIS/X",
     "title": "JSS HISTORY BK 1",
     "grade": "JSS 1",
     "price": 3000.0,
@@ -680,7 +680,7 @@
     "search_terms": "jss history bk 1 jss 1 📚 history"
   },
   {
-    "book_code": "GEN/J2/JSHI",
+    "book_code": "GEN/J2/JSSHIS/X",
     "title": "JSS HISTORY BK 2",
     "grade": "JSS 2",
     "price": 3000.0,
@@ -688,7 +688,7 @@
     "search_terms": "jss history bk 2 jss 2 📚 history"
   },
   {
-    "book_code": "GEN/J3/JSHI",
+    "book_code": "GEN/J3/JSSHIS/X",
     "title": "JSS HISTORY BK 3",
     "grade": "JSS 3",
     "price": 3000.0,
@@ -696,7 +696,7 @@
     "search_terms": "jss history bk 3 jss 3 📚 history"
   },
   {
-    "book_code": "GEN/PPrimary/TAFO",
+    "book_code": "GEN/PPrimary/TANEST/X",
     "title": "TANGIYKA FOREST & STRANGE VIRUS",
     "grade": "Primary",
     "price": 1500.0,
@@ -704,7 +704,7 @@
     "search_terms": "tangiyka forest & strange virus primary 📖 primary literature"
   },
   {
-    "book_code": "GEN/PPrimary/MITO",
+    "book_code": "GEN/PPrimary/MIS/X",
     "title": "THE MISSING TOY",
     "grade": "Primary",
     "price": 1500.0,
@@ -712,7 +712,7 @@
     "search_terms": "the missing toy primary 📖 primary literature"
   },
   {
-    "book_code": "GEN/PPrimary/RE",
+    "book_code": "GEN/PPrimary/REW/X",
     "title": "THE REWARD",
     "grade": "Primary",
     "price": 1500.0,
@@ -720,7 +720,7 @@
     "search_terms": "the reward primary 📖 primary literature"
   },
   {
-    "book_code": "GEN/PPrimary/NECL",
+    "book_code": "GEN/PPrimary/NEWCLA/X",
     "title": "A NEW CLASS",
     "grade": "Primary",
     "price": 1500.0,
@@ -728,7 +728,7 @@
     "search_terms": "a new class primary 📖 primary literature"
   },
   {
-    "book_code": "GEN/PPrimary/HOKI",
+    "book_code": "GEN/PPrimary/HOPFRO/X",
     "title": "HOPPY THE KIND FROG",
     "grade": "Primary",
     "price": 1500.0,
@@ -736,7 +736,7 @@
     "search_terms": "hoppy the kind frog primary 📖 primary literature"
   },
   {
-    "book_code": "GEN/PPrimary/PRWH",
+    "book_code": "GEN/PPrimary/PRAWHA/X",
     "title": "PRACTICE WHAT YOU PREACH",
     "grade": "Primary",
     "price": 1800.0,

@@ -97,11 +97,61 @@ def generate_book_code(title, grade, subject):
     else:
         code_parts.append("GEN")
     
-    # Add title abbreviation (first 2-3 letters of key words)
-    key_words = [word for word in title_words if len(word) > 2 and word not in ['BOOK', 'BK', 'THE', 'AND', 'FOR']]
-    if key_words:
-        title_abbr = ''.join([word[:2].upper() for word in key_words[:2]])
-        code_parts.append(title_abbr)
+    # Create more unique title abbreviation
+    # Extract meaningful words and create unique identifier
+    meaningful_words = []
+    for word in title_words:
+        word_clean = word.upper().replace('BOOK', '').replace('BK', '').replace('THE', '').replace('AND', '').replace('FOR', '').replace('OF', '').replace('IN', '').replace('TO', '')
+        if len(word_clean) > 2:
+            meaningful_words.append(word_clean)
+    
+    # Create unique identifier from meaningful words
+    if meaningful_words:
+        # Take first 2-3 characters from each meaningful word
+        title_abbr = ''.join([word[:3] for word in meaningful_words[:3]])
+        # Limit to 6 characters max
+        title_abbr = title_abbr[:6]
+    else:
+        title_abbr = "GEN"
+    
+    code_parts.append(title_abbr)
+    
+    # Add a unique suffix based on subject to ensure uniqueness
+    subject_suffix = {
+        'Mathematics': 'M',
+        'English': 'E',
+        'Basic Science & Technology': 'S',
+        'Computer Studies': 'C',
+        'National Values Education': 'N',
+        'History': 'H',
+        'Quantitative Reasoning': 'Q',
+        'Verbal Reasoning': 'V',
+        'Writing': 'W',
+        'Health Education': 'H',
+        'Social Studies': 'S',
+        'Literature': 'L',
+        # Handle subjects with emojis
+        '🏥 Health Education': 'H',
+        '🌍 Social Studies': 'S',
+        '📐 Mathematics': 'M',
+        '📚 English': 'E',
+        '🔬 Basic Science & Technology': 'S',
+        '💻 Computer Studies': 'C',
+        '🏛️ National Values Education': 'N',
+        '📖 History': 'H',
+        '🧮 Quantitative Reasoning': 'Q',
+        '📝 Verbal Reasoning': 'V',
+        '✍️ Writing': 'W',
+        '📚 Literature': 'L',
+        # Additional subject variations found in the data
+        '📖 English Language': 'E',
+        '🗣️ Verbal Reasoning': 'V',
+        '✍️ Writing Skills': 'W'
+    }
+    
+    # Add subject suffix to make it unique
+    suffix = subject_suffix.get(subject, 'X')
+    code_parts.append(suffix)
     
     return '/'.join(code_parts)
 
