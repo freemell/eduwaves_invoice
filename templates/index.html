@@ -443,8 +443,11 @@
 
                 <!-- Generate Invoice Button -->
                 <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-primary btn-lg">
+                    <button type="submit" class="btn btn-primary btn-lg me-3">
                         <i class="fas fa-file-pdf"></i> Generate Invoice PDF
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-lg" onclick="clearForm()">
+                        <i class="fas fa-eraser"></i> Clear Form
                     </button>
                 </div>
 
@@ -509,7 +512,11 @@
                                 <div><strong>${book.title}</strong></div>
                                 <div class="book-info">${book.book_code} | ${book.grade} | ${book.subject} | N${book.price.toLocaleString()}</div>
                             `;
-                            item.addEventListener('click', () => addBookToInvoice(book));
+                            item.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                addBookToInvoice(book);
+                            });
                             resultsDiv.appendChild(item);
                         });
                     }
@@ -558,7 +565,11 @@
                                 <div><strong>${school.name}</strong></div>
                                 <div class="book-info">${school.sm_name} | ${school.phone}</div>
                             `;
-                            item.addEventListener('click', () => selectCustomer(school));
+                            item.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                selectCustomer(school);
+                            });
                             resultsDiv.appendChild(item);
                         });
                     }
@@ -581,8 +592,50 @@
             }
             
             updateItemsTable();
+            updateTotals();
+            
+            // Clear search and results completely
             document.getElementById('bookSearch').value = '';
+            document.getElementById('bookResults').innerHTML = '';
             document.getElementById('bookResults').style.display = 'none';
+        }
+
+        // Clear form function
+        function clearForm() {
+            // Clear selected items
+            selectedItems = [];
+            updateItemsTable();
+            updateTotals();
+            
+            // Clear search fields
+            document.getElementById('bookSearch').value = '';
+            document.getElementById('bookResults').innerHTML = '';
+            document.getElementById('bookResults').style.display = 'none';
+            
+            document.getElementById('customerSearch').value = '';
+            document.getElementById('customerResults').innerHTML = '';
+            document.getElementById('customerResults').style.display = 'none';
+            
+            // Clear customer details
+            document.getElementById('customerPhone').value = '';
+            document.getElementById('customerAddress').value = '';
+            document.getElementById('salesManager').value = '';
+            
+            // Reset discount
+            document.getElementById('discountPercent').value = '0';
+            
+            // Reset to default invoice type (credit school)
+            document.getElementById('creditSchool').checked = true;
+            
+            // Reset bank selection to cash sales
+            document.getElementById('cashSales').checked = true;
+            updateBankDetails();
+            
+            // Make fields editable for credit school
+            document.getElementById('customerSearch').readOnly = false;
+            document.getElementById('salesManager').readOnly = false;
+            document.getElementById('customerSearch').placeholder = "Type school name to search...";
+            document.getElementById('salesManager').placeholder = "Enter sales manager name";
         }
 
         // Select customer
@@ -804,6 +857,9 @@
                     a.click();
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
+                    
+                    // Clear form for next invoice
+                    clearForm();
                 } else {
                     alert('Error generating invoice. Please try again.');
                 }
