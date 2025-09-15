@@ -444,7 +444,7 @@ def create_invoice_pdf(data, invoice_number):
     story.append(Spacer(1, 20))
     
     # Items Table
-    items_data = [["S.No.", "BOOK CODE", "TITLE", "RATE", "QTY.", "GROSS AMT.", "NET AMOUNT"]]
+    items_data = [["S.No.", "TITLE", "RATE", "QTY.", "GROSS AMT.", "NET AMOUNT"]]
     
     total_gross = 0
     total_quantity = 0
@@ -455,7 +455,6 @@ def create_invoice_pdf(data, invoice_number):
         total_quantity += item['quantity']
         items_data.append([
             str(i),
-            item['book_code'],
             item['title'],
             f"N{item['price']:,.2f}",
             str(item['quantity']),
@@ -471,19 +470,19 @@ def create_invoice_pdf(data, invoice_number):
     if discount_percent > 0:
         # Add total before discount
         items_data.append([
-            "", "", "", "", "", f"N{total_gross:,.2f}", f"N{total_gross:,.2f}"
+            "", "", "", "", f"N{total_gross:,.2f}", f"N{total_gross:,.2f}"
         ])
         # Add discount line
         items_data.append([
-            "", "", f"LESS DISCOUNT {discount_percent}%", "", "", f"N{discount_amount:,.2f}", f"N{net_total:,.2f}"
+            "", f"LESS DISCOUNT {discount_percent}%", "", "", f"N{discount_amount:,.2f}", f"N{net_total:,.2f}"
         ])
     
     # Add final total row
     items_data.append([
-        "", "", "Total:", "", str(total_quantity), f"N{total_gross:,.2f}", f"N{net_total:,.2f}"
+        "", "Total:", "", str(total_quantity), f"N{total_gross:,.2f}", f"N{net_total:,.2f}"
     ])
     
-    items_table = Table(items_data, colWidths=[0.5*inch, 1*inch, 2.8*inch, 0.8*inch, 0.5*inch, 1*inch, 1*inch])
+    items_table = Table(items_data, colWidths=[0.5*inch, 3.8*inch, 0.8*inch, 0.5*inch, 1*inch, 1*inch])
     items_table.setStyle(TableStyle([
         # Header row
         ('BACKGROUND', (0, 0), (-1, 0), colors.black),
@@ -496,7 +495,7 @@ def create_invoice_pdf(data, invoice_number):
         
         # Data rows
         ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
-        ('ALIGN', (2, 1), (2, -1), 'LEFT'),  # Title column left-aligned
+        ('ALIGN', (1, 1), (1, -1), 'LEFT'),  # Title column left-aligned
         ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
         ('FONTSIZE', (0, 1), (-1, -1), 9),
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
