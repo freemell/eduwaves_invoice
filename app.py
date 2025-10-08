@@ -168,6 +168,54 @@ def search_schools():
     
     return jsonify(results[:10])
 
+@app.route('/api/test')
+def test_api():
+    """Test API endpoint"""
+    return jsonify({
+        'success': True,
+        'message': 'API is working',
+        'timestamp': datetime.now().isoformat()
+    })
+
+@app.route('/api/database/status')
+def database_status():
+    """Check database status"""
+    try:
+        import sqlite3
+        conn = sqlite3.connect('invoices.db')
+        cursor = conn.cursor()
+        
+        # Check if tables exist
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+        tables = [row[0] for row in cursor.fetchall()]
+        
+        # Count records
+        invoice_count = 0
+        school_count = 0
+        if 'invoices' in tables:
+            cursor.execute("SELECT COUNT(*) FROM invoices")
+            invoice_count = cursor.fetchone()[0]
+        
+        if 'schools' in tables:
+            cursor.execute("SELECT COUNT(*) FROM schools")
+            school_count = cursor.fetchone()[0]
+        
+        conn.close()
+        
+        return jsonify({
+            'success': True,
+            'database_exists': True,
+            'tables': tables,
+            'invoice_count': invoice_count,
+            'school_count': school_count
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e),
+            'database_exists': False
+        })
+
 @app.route('/api/schools/history/<school_name>')
 def get_school_history(school_name):
     """Get invoice history for a specific school"""
@@ -202,8 +250,10 @@ def get_school_history(school_name):
 @app.route('/api/invoices/<invoice_number>')
 def get_invoice_details(invoice_number):
     """Get full details of a specific invoice by invoice number"""
+    print(f"🔍 Searching for invoice: {invoice_number}")
     try:
         invoice = db.get_invoice_by_number(invoice_number)
+        print(f"📄 Invoice found: {invoice is not None}")
         
         if not invoice:
             return jsonify({'error': 'Invoice not found'}), 404

@@ -579,4 +579,8 @@ def initialize_schools_from_csv():
         print(f"⚠️ Could not import schools from CSV: {e}")
 
 # Run initialization
-initialize_schools_from_csv()
+try:
+    initialize_schools_from_csv()
+    print("✅ Database initialization completed successfully")
+except Exception as e:
+    print(f"❌ Database initialization failed: {e}")
