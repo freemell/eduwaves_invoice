@@ -181,10 +181,11 @@ class InvoiceDatabase:
                 reader = csv.DictReader(f)
                 for row in reader:
                     try:
-                        school_name = row.get('SMName', row.get('customer_name', '')).strip()
-                        phone_number = row.get('phone_number', '').strip()
-                        address = row.get('address', '').strip()
-                        sales_manager = row.get('sales_manager', '').strip()
+                        # Handle different column names
+                        school_name = (row.get('SMName') or row.get('customer_name') or row.get('Customer_Name', '')).strip()
+                        phone_number = (row.get('phone_number') or row.get('Phone_Number', '')).strip()
+                        address = (row.get('address') or row.get('Address', '')).strip()
+                        sales_manager = (row.get('sales_manager') or row.get('SM_Name', '')).strip()
                         
                         if school_name:
                             # Check if exists

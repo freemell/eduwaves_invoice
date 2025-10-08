@@ -216,6 +216,23 @@ def database_status():
             'database_exists': False
         })
 
+@app.route('/api/database/import-schools', methods=['POST'])
+def import_schools():
+    """Manually import schools from CSV"""
+    try:
+        imported_count = db.import_schools_from_csv('unique_schools.csv')
+        return jsonify({
+            'success': True,
+            'imported_count': imported_count,
+            'message': f'Successfully imported {imported_count} schools'
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e),
+            'message': 'Failed to import schools'
+        })
+
 @app.route('/api/schools/history/<school_name>')
 def get_school_history(school_name):
     """Get invoice history for a specific school"""
