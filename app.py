@@ -29,21 +29,6 @@ def ping():
 def handler(request):
     return app(request.environ, lambda *args: None)
 
-# Railway deployment configuration - Only run Flask dev server locally
-if __name__ == '__main__':
-    # Only run Flask dev server for local development
-    # In production, Railway will use gunicorn with wsgi.py
-    port = int(os.environ.get('PORT', 5000))
-    print(f"🚀 Starting EDUwaves Invoice Generator (LOCAL DEV) on port {port}")
-    print(f"📋 Available routes: /, /health, /api/books/search, /api/schools/search, /api/generate-invoice")
-    
-    # Print all registered routes
-    print_routes()
-    
-    print(f"🌐 Local dev server starting on http://0.0.0.0:{port}")
-    print("⚠️  WARNING: This is a development server. Use WSGI for production!")
-    app.run(host='0.0.0.0', port=port, debug=True)
-
 # Load data
 def load_books():
     try:
@@ -183,6 +168,131 @@ def search_schools():
     
     return jsonify(results[:10])
 
+@app.route('/api/schools/history/<school_name>')
+def get_school_history(school_name):
+    """Get invoice history for a specific school"""
+    try:
+        history = db.get_school_invoice_history(school_name)
+        
+        # Format the response
+        formatted_history = []
+        for invoice in history:
+            formatted_history.append({
+                'invoice_number': invoice['invoice_number'],
+                'invoice_type': invoice['invoice_type'],
+                'date': invoice['created_at'],
+                'sales_manager': invoice['sales_manager'],
+                'total_quantity': invoice['total_quantity'],
+                'gross_total': invoice['gross_total'],
+                'discount_percent': invoice['discount_percent'],
+                'net_total': invoice['net_total'],
+                'item_count': invoice['item_count'],
+                'items': invoice['items']
+            })
+        
+        return jsonify({
+            'success': True,
+            'school_name': school_name,
+            'invoice_count': len(formatted_history),
+            'invoices': formatted_history
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/invoices/<invoice_number>')
+def get_invoice_details(invoice_number):
+    """Get full details of a specific invoice by invoice number"""
+    try:
+        invoice = db.get_invoice_by_number(invoice_number)
+        
+        if not invoice:
+            return jsonify({'error': 'Invoice not found'}), 404
+        
+        # Format items
+        formatted_items = []
+        for item in invoice.get('items', []):
+            formatted_items.append({
+                'book_code': item['book_code'],
+                'title': item['book_title'],
+                'grade': item.get('book_grade', ''),
+                'subject': item.get('book_subject', ''),
+                'price': float(item['rate']),
+                'quantity': int(item['quantity']),
+                'gross_amount': float(item['gross_amount'])
+            })
+        
+        return jsonify({
+            'success': True,
+            'invoice': {
+                'invoice_number': invoice['invoice_number'],
+                'invoice_type': invoice['invoice_type'],
+                'customer_name': invoice['customer_name'],
+                'customer_phone': invoice.get('customer_phone', ''),
+                'customer_address': invoice.get('customer_address', ''),
+                'sales_manager': invoice['sales_manager'],
+                'bank_name': invoice['bank_name'],
+                'account_number': invoice['account_number'],
+                'date': invoice['created_at'],
+                'total_quantity': invoice['total_quantity'],
+                'gross_total': invoice['gross_total'],
+                'discount_percent': invoice['discount_percent'],
+                'discount_amount': invoice['discount_amount'],
+                'net_total': invoice['net_total'],
+                'items': formatted_items
+            }
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/invoices/reprint/<invoice_number>', methods=['POST'])
+def reprint_invoice(invoice_number):
+    """Reprint an existing invoice"""
+    try:
+        invoice = db.get_invoice_by_number(invoice_number)
+        
+        if not invoice:
+            return jsonify({'error': 'Invoice not found'}), 404
+        
+        # Format items for PDF generation
+        formatted_items = []
+        for item in invoice.get('items', []):
+            formatted_items.append({
+                'book_code': item['book_code'],
+                'title': item['book_title'],
+                'grade': item.get('book_grade', ''),
+                'subject': item.get('book_subject', ''),
+                'price': float(item['rate']),
+                'quantity': int(item['quantity'])
+            })
+        
+        # Prepare invoice data for PDF
+        invoice_data = {
+            'customer_name': invoice['customer_name'],
+            'customer_phone': invoice.get('customer_phone', ''),
+            'customer_address': invoice.get('customer_address', ''),
+            'sales_manager': invoice['sales_manager'],
+            'bank_name': invoice['bank_name'],
+            'account_number': invoice['account_number'],
+            'discount_percent': invoice['discount_percent'],
+            'invoice_type': invoice['invoice_type'],
+            'items': formatted_items
+        }
+        
+        # Generate PDF
+        pdf_buffer = create_invoice_pdf(invoice_data, invoice['invoice_number'])
+        
+        # Return as base64
+        import base64
+        pdf_base64 = base64.b64encode(pdf_buffer.getvalue()).decode('utf-8')
+        
+        return jsonify({
+            'success': True,
+            'invoice_number': invoice['invoice_number'],
+            'pdf_data': pdf_base64
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/reports')
 def reports_page():
     """Reports page"""
@@ -284,6 +394,15 @@ def generate_invoice():
         # Save to database
         invoice_id = db.save_invoice(invoice_data)
         print(f"✅ Invoice saved to database with ID: {invoice_id}")
+        
+        # Automatically create a 20% discounted version
+        try:
+            discounted_invoice_id = db.create_discounted_invoice(invoice_id, 20.0)
+            print(f"✅ Discounted invoice created with ID: {discounted_invoice_id}")
+        except Exception as e:
+            print(f"❌ Error creating discounted invoice: {e}")
+            # Continue even if discounted version fails
+            
     except Exception as e:
         print(f"❌ Error saving invoice to database: {e}")
         # Continue with PDF generation even if database save fails
@@ -300,6 +419,69 @@ def generate_invoice():
         'invoice_number': invoice_number,
         'pdf_data': pdf_base64
     })
+
+@app.route('/api/generate-discounted-invoice', methods=['POST'])
+def generate_discounted_invoice():
+    """Generate a 20% discounted version of an existing invoice"""
+    data = request.json
+    original_invoice_number = data.get('invoice_number')
+    
+    if not original_invoice_number:
+        return jsonify({'error': 'Original invoice number is required'}), 400
+    
+    try:
+        # Get original invoice from database
+        original_invoice = db.get_invoice_by_number(original_invoice_number)
+        if not original_invoice:
+            return jsonify({'error': 'Original invoice not found'}), 404
+        
+        # Create discounted version
+        discounted_invoice_id = db.create_discounted_invoice(original_invoice['id'], 20.0)
+        
+        # Get the discounted invoice data
+        discounted_invoice_data = db.get_invoice_by_id(discounted_invoice_id)
+        
+        if not discounted_invoice_data:
+            return jsonify({'error': 'Failed to retrieve discounted invoice data'}), 500
+        
+        # Get items for the discounted invoice
+        conn = sqlite3.connect('invoices.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM invoice_items WHERE invoice_id = ?', (discounted_invoice_id,))
+        item_columns = [description[0] for description in cursor.description]
+        items = [dict(zip(item_columns, row)) for row in cursor.fetchall()]
+        conn.close()
+        
+        # Format items for PDF generation
+        formatted_items = []
+        for item in items:
+            formatted_items.append({
+                'book_code': item['book_code'],
+                'title': item['book_title'],
+                'grade': item.get('book_grade', ''),
+                'subject': item.get('book_subject', ''),
+                'price': float(item['rate']),
+                'quantity': int(item['quantity'])
+            })
+        
+        # Add items to invoice data
+        discounted_invoice_data['items'] = formatted_items
+        
+        # Generate PDF for the discounted invoice
+        pdf_data = generate_invoice_pdf(discounted_invoice_data)
+        
+        # Return as base64
+        import base64
+        pdf_base64 = base64.b64encode(pdf_data).decode('utf-8')
+        
+        return jsonify({
+            'success': True,
+            'invoice_number': discounted_invoice_data['invoice_number'],
+            'pdf_data': pdf_base64
+        })
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/<filename>')
 def serve_logo(filename):
@@ -886,5 +1068,17 @@ def number_to_words(num):
     
     return result.strip() + " NAIRA ONLY"
 
+# Railway deployment configuration - Only run Flask dev server locally
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Only run Flask dev server for local development
+    # In production, Railway will use gunicorn with wsgi.py
+    port = int(os.environ.get('PORT', 5000))
+    print(f"🚀 Starting EDUwaves Invoice Generator (LOCAL DEV) on port {port}")
+    print(f"📋 Available routes: /, /health, /api/books/search, /api/schools/search, /api/generate-invoice, /api/generate-discounted-invoice")
+    
+    # Print all registered routes
+    print_routes()
+    
+    print(f"🌐 Local dev server starting on http://0.0.0.0:{port}")
+    print("⚠️  WARNING: This is a development server. Use WSGI for production!")
+    app.run(host='0.0.0.0', port=port, debug=True)
