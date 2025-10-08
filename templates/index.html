@@ -227,9 +227,14 @@
                 </div>
                 <h1><i class="fas fa-file-invoice"></i> EDUwaves Invoice Generator</h1>
                 <p>Professional Invoice Creation System</p>
-                <a href="/reports" class="btn btn-outline-primary btn-sm">
-                    <i class="fas fa-chart-bar"></i> View Reports
-                </a>
+                <div class="mb-2">
+                    <button type="button" class="btn btn-outline-success btn-sm me-2" data-bs-toggle="modal" data-bs-target="#historyModal">
+                        <i class="fas fa-history"></i> Invoice History
+                    </button>
+                    <a href="/reports" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-chart-bar"></i> View Reports
+                    </a>
+                </div>
                 
                 <!-- Contact Information -->
                 <div class="contact-info text-center mt-3" style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #e9ecef;">
@@ -446,6 +451,9 @@
                     <button type="submit" class="btn btn-primary btn-lg me-3">
                         <i class="fas fa-file-pdf"></i> Generate Invoice PDF
                     </button>
+                    <button type="button" class="btn btn-success btn-lg me-3" id="generateDiscountBtn" onclick="generateDiscountedInvoice()" style="display: none;">
+                        <i class="fas fa-percentage"></i> Generate 20% Discounted Invoice
+                    </button>
                     <button type="button" class="btn btn-outline-secondary btn-lg" onclick="clearForm()">
                         <i class="fas fa-eraser"></i> Clear Form
                     </button>
@@ -473,6 +481,7 @@
         // Global variables
         let selectedItems = [];
         let itemCounter = 1;
+        let lastGeneratedInvoiceNumber = null;
 
         // Bank details
         const bankDetails = {
@@ -677,6 +686,10 @@
             document.getElementById('salesManager').readOnly = false;
             document.getElementById('customerSearch').placeholder = "Type school name to search...";
             document.getElementById('salesManager').placeholder = "Enter sales manager name";
+            
+            // Hide discount button and reset invoice number
+            document.getElementById('generateDiscountBtn').style.display = 'none';
+            lastGeneratedInvoiceNumber = null;
         }
 
         // Select customer
@@ -886,6 +899,12 @@
                 if (data.success) {
                     alert(`Invoice generated successfully!\nInvoice Number: ${data.invoice_number}`);
                     
+                    // Store the invoice number for discount generation
+                    lastGeneratedInvoiceNumber = data.invoice_number;
+                    
+                    // Show the discount button
+                    document.getElementById('generateDiscountBtn').style.display = 'inline-block';
+                    
                     // Create and download PDF from base64 data
                     const pdfData = data.pdf_data;
                     const pdfBlob = new Blob([Uint8Array.from(atob(pdfData), c => c.charCodeAt(0))], {
@@ -912,6 +931,410 @@
                 console.error('Error:', error);
                 alert('Error generating invoice. Please try again.');
             });
+        });
+        
+        // Generate discounted invoice function
+        function generateDiscountedInvoice() {
+            if (!lastGeneratedInvoiceNumber) {
+                alert('No invoice number available. Please generate an invoice first.');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loadingIndicator').style.display = 'block';
+            
+            fetch('/api/generate-discounted-invoice', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    invoice_number: lastGeneratedInvoiceNumber
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                
+                if (data.success) {
+                    alert(`Discounted invoice generated successfully!\nOriginal: ${data.original_invoice_number}\nDiscounted: ${data.discounted_invoice_number}\nDiscount Applied: ${data.discount_applied}%\nOriginal Total: N${data.original_total.toLocaleString()}\nDiscounted Total: N${data.discounted_total.toLocaleString()}`);
+                    
+                    // Create and download PDF from base64 data
+                    const pdfData = data.pdf_data;
+                    const pdfBlob = new Blob([Uint8Array.from(atob(pdfData), c => c.charCodeAt(0))], {
+                        type: 'application/pdf'
+                    });
+                    
+                    const url = URL.createObjectURL(pdfBlob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `discounted_invoice_${data.discounted_invoice_number.replace('/', '_')}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                } else {
+                    alert('Error generating discounted invoice: ' + (data.error || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                console.error('Error:', error);
+                alert('Error generating discounted invoice. Please try again.');
+            });
+        }
+    </script>
+
+    <!-- Invoice History Modal -->
+    <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="historyModalLabel">
+                        <i class="fas fa-history"></i> Invoice History
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Search Section -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-school"></i></span>
+                                <input type="text" class="form-control" id="historySchoolSearch" 
+                                       placeholder="Search by school name...">
+                                <button class="btn btn-success" type="button" onclick="searchSchoolHistory()">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                            </div>
+                            <small class="text-muted">Search for a school to see all its invoices</small>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-file-invoice"></i></span>
+                                <input type="text" class="form-control" id="historyInvoiceSearch" 
+                                       placeholder="Search by invoice number...">
+                                <button class="btn btn-primary" type="button" onclick="searchInvoiceNumber()">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                            </div>
+                            <small class="text-muted">Enter exact invoice number (e.g., HO/IN/2510081430)</small>
+                        </div>
+                    </div>
+
+                    <!-- Loading Indicator -->
+                    <div id="historyLoading" class="text-center" style="display: none;">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Searching...</p>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div id="historyResults" style="display: none;">
+                        <h6 id="historyResultsTitle" class="mb-3"></h6>
+                        <div id="historyResultsContent"></div>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="historyEmptyState" class="text-center text-muted py-5">
+                        <i class="fas fa-search fa-3x mb-3"></i>
+                        <p>Search for a school or invoice number to view history</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // History Search Functions
+        function searchSchoolHistory() {
+            const schoolName = document.getElementById('historySchoolSearch').value.trim();
+            
+            if (!schoolName) {
+                alert('Please enter a school name');
+                return;
+            }
+
+            document.getElementById('historyLoading').style.display = 'block';
+            document.getElementById('historyResults').style.display = 'none';
+            document.getElementById('historyEmptyState').style.display = 'none';
+
+            fetch(`/api/schools/history/${encodeURIComponent(schoolName)}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('historyLoading').style.display = 'none';
+
+                    if (data.error) {
+                        alert('Error: ' + data.error);
+                        document.getElementById('historyEmptyState').style.display = 'block';
+                        return;
+                    }
+
+                    if (data.invoices.length === 0) {
+                        document.getElementById('historyEmptyState').innerHTML = `
+                            <i class="fas fa-inbox fa-3x mb-3"></i>
+                            <p>No invoices found for "${schoolName}"</p>
+                        `;
+                        document.getElementById('historyEmptyState').style.display = 'block';
+                        return;
+                    }
+
+                    displaySchoolHistory(data);
+                })
+                .catch(error => {
+                    document.getElementById('historyLoading').style.display = 'none';
+                    console.error('Error:', error);
+                    alert('Error searching for school history');
+                    document.getElementById('historyEmptyState').style.display = 'block';
+                });
+        }
+
+        function searchInvoiceNumber() {
+            const invoiceNumber = document.getElementById('historyInvoiceSearch').value.trim();
+            
+            if (!invoiceNumber) {
+                alert('Please enter an invoice number');
+                return;
+            }
+
+            document.getElementById('historyLoading').style.display = 'block';
+            document.getElementById('historyResults').style.display = 'none';
+            document.getElementById('historyEmptyState').style.display = 'none';
+
+            fetch(`/api/invoices/${encodeURIComponent(invoiceNumber)}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('historyLoading').style.display = 'none';
+
+                    if (data.error) {
+                        alert('Error: ' + data.error);
+                        document.getElementById('historyEmptyState').innerHTML = `
+                            <i class="fas fa-inbox fa-3x mb-3"></i>
+                            <p>Invoice "${invoiceNumber}" not found</p>
+                        `;
+                        document.getElementById('historyEmptyState').style.display = 'block';
+                        return;
+                    }
+
+                    displayInvoiceDetails(data.invoice);
+                })
+                .catch(error => {
+                    document.getElementById('historyLoading').style.display = 'none';
+                    console.error('Error:', error);
+                    alert('Error searching for invoice');
+                    document.getElementById('historyEmptyState').style.display = 'block';
+                });
+        }
+
+        function displaySchoolHistory(data) {
+            document.getElementById('historyResultsTitle').innerHTML = `
+                <i class="fas fa-school text-success"></i> ${data.school_name} 
+                <span class="badge bg-success">${data.invoice_count} Invoice${data.invoice_count !== 1 ? 's' : ''}</span>
+            `;
+
+            let html = '<div class="table-responsive"><table class="table table-hover">';
+            html += '<thead class="table-success"><tr>';
+            html += '<th>Invoice #</th><th>Date</th><th>Type</th><th>Sales Manager</th>';
+            html += '<th>Items</th><th>Gross Total</th><th>Discount</th><th>Net Total</th><th>Actions</th>';
+            html += '</tr></thead><tbody>';
+
+            data.invoices.forEach(invoice => {
+                const date = new Date(invoice.date).toLocaleDateString();
+                const typeBadge = getTypeBadge(invoice.invoice_type);
+                
+                html += `<tr>
+                    <td><strong>${invoice.invoice_number}</strong></td>
+                    <td>${date}</td>
+                    <td>${typeBadge}</td>
+                    <td>${invoice.sales_manager}</td>
+                    <td>${invoice.item_count}</td>
+                    <td>N${invoice.gross_total.toLocaleString()}</td>
+                    <td>${invoice.discount_percent}%</td>
+                    <td><strong>N${invoice.net_total.toLocaleString()}</strong></td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="reprintInvoice('${invoice.invoice_number}')">
+                            <i class="fas fa-print"></i> Reprint
+                        </button>
+                    </td>
+                </tr>`;
+            });
+
+            html += '</tbody></table></div>';
+            
+            document.getElementById('historyResultsContent').innerHTML = html;
+            document.getElementById('historyResults').style.display = 'block';
+        }
+
+        function displayInvoiceDetails(invoice) {
+            document.getElementById('historyResultsTitle').innerHTML = `
+                <i class="fas fa-file-invoice text-primary"></i> Invoice Details: ${invoice.invoice_number}
+            `;
+
+            const date = new Date(invoice.date).toLocaleDateString();
+            const typeBadge = getTypeBadge(invoice.invoice_type);
+
+            let html = `
+                <div class="card mb-3">
+                    <div class="card-header bg-primary text-white">
+                        <h6 class="mb-0">Invoice Information</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Customer:</strong> ${invoice.customer_name}</p>
+                                <p><strong>Phone:</strong> ${invoice.customer_phone || 'N/A'}</p>
+                                <p><strong>Address:</strong> ${invoice.customer_address || 'N/A'}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Date:</strong> ${date}</p>
+                                <p><strong>Type:</strong> ${typeBadge}</p>
+                                <p><strong>Sales Manager:</strong> ${invoice.sales_manager}</p>
+                                <p><strong>Bank:</strong> ${invoice.bank_name} - ${invoice.account_number}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header bg-success text-white">
+                        <h6 class="mb-0">Items (${invoice.items.length})</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Book Title</th>
+                                        <th>Grade</th>
+                                        <th>Price</th>
+                                        <th>Qty</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+
+            invoice.items.forEach((item, index) => {
+                html += `<tr>
+                    <td>${index + 1}</td>
+                    <td>${item.title}</td>
+                    <td>${item.grade}</td>
+                    <td>N${item.price.toLocaleString()}</td>
+                    <td>${item.quantity}</td>
+                    <td>N${item.gross_amount.toLocaleString()}</td>
+                </tr>`;
+            });
+
+            html += `</tbody></table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8"></div>
+                            <div class="col-md-4">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>Total Quantity:</strong></td>
+                                        <td class="text-end">${invoice.total_quantity}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Gross Total:</strong></td>
+                                        <td class="text-end">N${invoice.gross_total.toLocaleString()}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Discount (${invoice.discount_percent}%):</strong></td>
+                                        <td class="text-end">-N${invoice.discount_amount.toLocaleString()}</td>
+                                    </tr>
+                                    <tr class="table-success">
+                                        <td><strong>Net Total:</strong></td>
+                                        <td class="text-end"><strong>N${invoice.net_total.toLocaleString()}</strong></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="text-center mt-3">
+                            <button class="btn btn-primary btn-lg" onclick="reprintInvoice('${invoice.invoice_number}')">
+                                <i class="fas fa-print"></i> Reprint This Invoice
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('historyResultsContent').innerHTML = html;
+            document.getElementById('historyResults').style.display = 'block';
+        }
+
+        function getTypeBadge(type) {
+            const badges = {
+                'floating': '<span class="badge bg-success">Floating Stock</span>',
+                'credit': '<span class="badge bg-warning text-dark">Credit School</span>',
+                'special': '<span class="badge bg-danger">Special Market</span>'
+            };
+            return badges[type.toLowerCase()] || `<span class="badge bg-secondary">${type}</span>`;
+        }
+
+        function reprintInvoice(invoiceNumber) {
+            if (!confirm(`Reprint invoice ${invoiceNumber}?`)) {
+                return;
+            }
+
+            document.getElementById('historyLoading').style.display = 'block';
+
+            fetch(`/api/invoices/reprint/${encodeURIComponent(invoiceNumber)}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('historyLoading').style.display = 'none';
+
+                if (data.success) {
+                    // Convert base64 to blob
+                    const byteCharacters = atob(data.pdf_data);
+                    const byteNumbers = new Array(byteCharacters.length);
+                    for (let i = 0; i < byteCharacters.length; i++) {
+                        byteNumbers[i] = byteCharacters.charCodeAt(i);
+                    }
+                    const byteArray = new Uint8Array(byteNumbers);
+                    const blob = new Blob([byteArray], { type: 'application/pdf' });
+                    
+                    // Download
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${invoiceNumber.replace(/\//g, '_')}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                    alert('Invoice reprinted successfully!');
+                } else {
+                    alert('Error reprinting invoice: ' + (data.error || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                document.getElementById('historyLoading').style.display = 'none';
+                console.error('Error:', error);
+                alert('Error reprinting invoice');
+            });
+        }
+
+        // Allow Enter key to trigger search
+        document.getElementById('historySchoolSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchSchoolHistory();
+            }
+        });
+
+        document.getElementById('historyInvoiceSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchInvoiceNumber();
+            }
         });
     </script>
 </body>
