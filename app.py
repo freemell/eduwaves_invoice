@@ -365,6 +365,11 @@ def reports_page():
     """Reports page"""
     return render_template('reports.html')
 
+@app.route('/debug')
+def debug_page():
+    """Debug page for database issues"""
+    return render_template('debug.html')
+
 @app.route('/api/reports/summary', methods=['POST'])
 def get_report_summary():
     """Get report summary for date range"""
