@@ -401,6 +401,9 @@
         }
 
         function downloadReportPDF() {
+            console.log('downloadReportPDF called');
+            console.log('currentReportData:', currentReportData);
+            
             if (!currentReportData) {
                 alert('Please generate a report first.');
                 return;
@@ -409,6 +412,9 @@
             // Show loading
             document.getElementById('loadingIndicator').style.display = 'block';
             
+            console.log('Sending request to /api/reports/generate-pdf');
+            console.log('Request data:', currentReportData);
+            
             fetch('/api/reports/generate-pdf', {
                 method: 'POST',
                 headers: {
@@ -416,8 +422,12 @@
                 },
                 body: JSON.stringify(currentReportData)
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.json();
+            })
             .then(data => {
+                console.log('Response data:', data);
                 document.getElementById('loadingIndicator').style.display = 'none';
                 
                 if (data.success) {

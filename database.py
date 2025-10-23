@@ -54,6 +54,22 @@ class InvoiceDatabase:
             )
         ''')
         
+        # Check if new columns exist in invoices table, if not add them
+        cursor.execute("PRAGMA table_info(invoices)")
+        columns = [column[1] for column in cursor.fetchall()]
+        
+        if 'school_id' not in columns:
+            print("Adding school_id column to invoices table...")
+            cursor.execute('ALTER TABLE invoices ADD COLUMN school_id INTEGER')
+        
+        if 'is_discounted_version' not in columns:
+            print("Adding is_discounted_version column to invoices table...")
+            cursor.execute('ALTER TABLE invoices ADD COLUMN is_discounted_version BOOLEAN DEFAULT FALSE')
+        
+        if 'original_invoice_id' not in columns:
+            print("Adding original_invoice_id column to invoices table...")
+            cursor.execute('ALTER TABLE invoices ADD COLUMN original_invoice_id INTEGER')
+        
         # Create invoice_items table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS invoice_items (
@@ -171,6 +187,11 @@ class InvoiceDatabase:
     def import_schools_from_csv(self, csv_path: str) -> int:
         """Import schools from CSV file"""
         import csv
+        import os
+        
+        print(f"Looking for CSV file: {csv_path}")
+        print(f"File exists: {os.path.exists(csv_path)}")
+        
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
@@ -179,13 +200,15 @@ class InvoiceDatabase:
         try:
             with open(csv_path, 'r', encoding='utf-8') as f:
                 reader = csv.DictReader(f)
-                for row in reader:
+                print(f"CSV columns: {reader.fieldnames}")
+                
+                for i, row in enumerate(reader):
                     try:
                         # Handle different column names
-                        school_name = (row.get('SMName') or row.get('customer_name') or row.get('Customer_Name', '')).strip()
-                        phone_number = (row.get('phone_number') or row.get('Phone_Number', '')).strip()
-                        address = (row.get('address') or row.get('Address', '')).strip()
-                        sales_manager = (row.get('sales_manager') or row.get('SM_Name', '')).strip()
+                        school_name = (row.get('Customer_Name') or row.get('customer_name') or row.get('SMName', '')).strip()
+                        phone_number = (row.get('Phone_Number') or row.get('phone_number', '')).strip()
+                        address = (row.get('Address') or row.get('address', '')).strip()
+                        sales_manager = (row.get('SM_Name') or row.get('sales_manager', '')).strip()
                         
                         if school_name:
                             # Check if exists
@@ -196,15 +219,24 @@ class InvoiceDatabase:
                                     VALUES (?, ?, ?, ?)
                                 ''', (school_name, phone_number, address, sales_manager))
                                 imported_count += 1
+                                
+                                if imported_count <= 5:  # Log first 5 imports
+                                    print(f"Imported: {school_name} - {sales_manager}")
                     except Exception as e:
                         print(f"Error importing school {school_name}: {e}")
                         continue
+                        
+                    if i >= 10:  # Limit for testing
+                        print(f"Processed {i+1} rows, imported {imported_count}")
+                        break
             
             conn.commit()
+            print(f"Total imported: {imported_count} schools")
             return imported_count
             
         except Exception as e:
             conn.rollback()
+            print(f"Import failed: {e}")
             raise e
         finally:
             conn.close()
@@ -571,17 +603,17 @@ def initialize_schools_from_csv():
         conn.close()
         
         if count == 0:
-            print("📚 Importing schools from CSV...")
+            print("Importing schools from CSV...")
             imported = db.import_schools_from_csv('unique_schools.csv')
-            print(f"✅ Imported {imported} schools from CSV")
+            print(f"Imported {imported} schools from CSV")
         else:
-            print(f"ℹ️ Database already contains {count} schools")
+            print(f"Database already contains {count} schools")
     except Exception as e:
-        print(f"⚠️ Could not import schools from CSV: {e}")
+        print(f"Could not import schools from CSV: {e}")
 
 # Run initialization
 try:
     initialize_schools_from_csv()
-    print("✅ Database initialization completed successfully")
+    print("Database initialization completed successfully")
 except Exception as e:
-    print(f"❌ Database initialization failed: {e}")
+    print(f"Database initialization failed: {e}")

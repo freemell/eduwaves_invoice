@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 # Debug: Print all routes when app starts
 def print_routes():
-    print("🔍 Registered routes:")
+    print("Registered routes:")
     for rule in app.url_map.iter_rules():
         print(f"  {rule.methods} {rule.rule}")
 
@@ -95,11 +95,11 @@ def index():
                                 
                                 <h5>Available Features:</h5>
                                 <ul>
-                                    <li>✅ <strong>93 Books</strong> - Complete catalog search</li>
-                                    <li>✅ <strong>2,032 Schools</strong> - Database with autocomplete</li>
-                                    <li>✅ <strong>PDF Generation</strong> - Professional invoices</li>
-                                    <li>✅ <strong>Bank Selection</strong> - Zenith/Globus options</li>
-                                    <li>✅ <strong>Invoice Types</strong> - Floating/Credit/Special Market</li>
+                                    <li><strong>93 Books</strong> - Complete catalog search</li>
+                                    <li><strong>2,032 Schools</strong> - Database with autocomplete</li>
+                                    <li><strong>PDF Generation</strong> - Professional invoices</li>
+                                    <li><strong>Bank Selection</strong> - Zenith/Globus options</li>
+                                    <li><strong>Invoice Types</strong> - Floating/Credit/Special Market</li>
                                 </ul>
                                 
                                 <h5>Test Endpoints:</h5>
@@ -233,6 +233,75 @@ def import_schools():
             'message': 'Failed to import schools'
         })
 
+@app.route('/api/database/add-sample-data', methods=['POST'])
+def add_sample_data():
+    """Add sample schools and invoice for testing"""
+    try:
+        import sqlite3
+        conn = sqlite3.connect('invoices.db')
+        cursor = conn.cursor()
+        
+        # Add sample schools
+        sample_schools = [
+            ('FEDERAL GOVERNMENT COLLEGE', '08012345678', 'Abuja', 'DANIEL MMEYENE'),
+            ('APOSTOLIC DIVINE TOUCH SCHOOL', '08087654321', 'Lagos', 'NDIFON ISAIAH NTUI'),
+            ('THE GRACE AND GOLD SCHOOL', '08011111111', 'Kano', 'NDIFON ISAIAH NTUI')
+        ]
+        
+        schools_added = 0
+        for school_name, phone, address, sales_manager in sample_schools:
+            cursor.execute('SELECT id FROM schools WHERE school_name = ?', (school_name,))
+            if not cursor.fetchone():
+                cursor.execute('''
+                    INSERT INTO schools (school_name, phone_number, address, sales_manager)
+                    VALUES (?, ?, ?, ?)
+                ''', (school_name, phone, address, sales_manager))
+                schools_added += 1
+        
+        # Add sample invoice
+        cursor.execute('''
+            INSERT INTO invoices (
+                invoice_number, invoice_type, customer_name, customer_phone,
+                customer_address, sales_manager, bank_name, account_number,
+                total_quantity, gross_total, discount_percent, discount_amount, net_total
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            'HO/IN/2510081430', 'credit', 'FEDERAL GOVERNMENT COLLEGE', '08012345678',
+            'Abuja', 'DANIEL MMEYENE', 'ZENITH BANK', '1229600064',
+            5, 25000.0, 10.0, 2500.0, 22500.0
+        ))
+        
+        invoice_id = cursor.lastrowid
+        
+        # Add sample items
+        sample_items = [
+            (invoice_id, 'MATH/P1/ADDITI/M', 'PRIMARY MATHS BK 1', 'Primary 1', 'Mathematics', 5000.0, 3, 15000.0),
+            (invoice_id, 'ENG/P1/READIN/E', 'PRIMARY ENGLISH BK 1', 'Primary 1', 'English', 5000.0, 2, 10000.0)
+        ]
+        
+        for item in sample_items:
+            cursor.execute('''
+                INSERT INTO invoice_items (
+                    invoice_id, book_code, book_title, book_grade, book_subject, rate, quantity, gross_amount
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ''', item)
+        
+        conn.commit()
+        conn.close()
+        
+        return jsonify({
+            'success': True,
+            'schools_added': schools_added,
+            'invoice_added': 1,
+            'message': f'Added {schools_added} schools and 1 sample invoice'
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e),
+            'message': 'Failed to add sample data'
+        })
+
 @app.route('/api/schools/history/<school_name>')
 def get_school_history(school_name):
     """Get invoice history for a specific school"""
@@ -267,10 +336,10 @@ def get_school_history(school_name):
 @app.route('/api/invoices/<invoice_number>')
 def get_invoice_details(invoice_number):
     """Get full details of a specific invoice by invoice number"""
-    print(f"🔍 Searching for invoice: {invoice_number}")
+    print(f"Searching for invoice: {invoice_number}")
     try:
         invoice = db.get_invoice_by_number(invoice_number)
-        print(f"📄 Invoice found: {invoice is not None}")
+        print(f"Invoice found: {invoice is not None}")
         
         if not invoice:
             return jsonify({'error': 'Invoice not found'}), 404
@@ -405,92 +474,128 @@ def get_report_invoices():
 @app.route('/api/reports/generate-pdf', methods=['POST'])
 def generate_report_pdf():
     """Generate PDF report for date range"""
+    print("PDF generation request received")
     data = request.json
-    start_date = data.get('start_date')
-    end_date = data.get('end_date')
+    print(f"Received data: {data}")
+    
+    # Handle both camelCase and snake_case
+    start_date = data.get('start_date') or data.get('startDate')
+    end_date = data.get('end_date') or data.get('endDate')
+    
+    print(f"Date range: {start_date} to {end_date}")
     
     if not start_date or not end_date:
         return jsonify({'error': 'Start date and end date are required'}), 400
     
     try:
         # Get data
+        print("Getting summary data...")
         summary = db.get_invoice_summary(start_date, end_date)
+        print(f"Summary: {summary}")
+        
+        print("Getting invoice data...")
         invoices = db.get_invoices_by_date_range(start_date, end_date)
+        print(f"Invoices count: {len(invoices)}")
         
         # Create PDF
+        print("Creating PDF...")
         pdf_buffer = create_report_pdf(summary, invoices, start_date, end_date)
+        print("PDF created successfully")
         
         # Return as base64
         import base64
         pdf_base64 = base64.b64encode(pdf_buffer.getvalue()).decode('utf-8')
+        print(f"PDF encoded, size: {len(pdf_base64)} characters")
         
         return jsonify({
             'success': True,
             'pdf_data': pdf_base64
         })
     except Exception as e:
+        print(f"Error generating PDF: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/generate-invoice', methods=['POST'])
 def generate_invoice():
-    data = request.json
-    
-    # Generate invoice number
-    invoice_number = f"HO/IN/{datetime.now().strftime('%y%m%d%H%M')}"
-    
-    # Calculate totals
-    total_quantity = sum(item['quantity'] for item in data['items'])
-    gross_total = sum(item['quantity'] * item['price'] for item in data['items'])
-    discount_amount = gross_total * (data['discount_percent'] / 100)
-    net_total = gross_total - discount_amount
-    
-    # Prepare invoice data for database
-    invoice_data = {
-        'invoice_number': invoice_number,
-        'invoice_type': data['invoice_type'],
-        'customer_name': data['customer_name'],
-        'customer_phone': data.get('customer_phone', ''),
-        'customer_address': data.get('customer_address', ''),
-        'sales_manager': data['sales_manager'],
-        'bank_name': data['bank_name'],
-        'account_number': data['account_number'],
-        'total_quantity': total_quantity,
-        'gross_total': gross_total,
-        'discount_percent': data['discount_percent'],
-        'discount_amount': discount_amount,
-        'net_total': net_total,
-        'items': data['items']
-    }
+    try:
+        print("=== INVOICE GENERATION REQUEST ===")
+        data = request.json
+        print(f"Received data: {data}")
+        
+        if not data:
+            return jsonify({'error': 'No data received'}), 400
+        
+        # Generate invoice number
+        invoice_number = f"HO/IN/{datetime.now().strftime('%y%m%d%H%M')}"
+        print(f"Generated invoice number: {invoice_number}")
+    except Exception as e:
+        print(f"Error in invoice generation setup: {e}")
+        return jsonify({'error': f'Setup error: {str(e)}'}), 500
     
     try:
+        # Calculate totals
+        total_quantity = sum(item['quantity'] for item in data['items'])
+        gross_total = sum(item['quantity'] * item['price'] for item in data['items'])
+        discount_amount = gross_total * (data['discount_percent'] / 100)
+        net_total = gross_total - discount_amount
+        
+        print(f"Calculated totals: quantity={total_quantity}, gross={gross_total}, discount={discount_amount}, net={net_total}")
+        
+        # Prepare invoice data for database
+        invoice_data = {
+            'invoice_number': invoice_number,
+            'invoice_type': data['invoice_type'],
+            'customer_name': data['customer_name'],
+            'customer_phone': data.get('customer_phone', ''),
+            'customer_address': data.get('customer_address', ''),
+            'sales_manager': data['sales_manager'],
+            'bank_name': data['bank_name'],
+            'account_number': data['account_number'],
+            'total_quantity': total_quantity,
+            'gross_total': gross_total,
+            'discount_percent': data['discount_percent'],
+            'discount_amount': discount_amount,
+            'net_total': net_total,
+            'items': data['items']
+        }
+        
         # Save to database
+        print("Attempting to save invoice to database...")
+        print(f"Invoice data: {invoice_data}")
         invoice_id = db.save_invoice(invoice_data)
-        print(f"✅ Invoice saved to database with ID: {invoice_id}")
+        print(f"Invoice saved to database with ID: {invoice_id}")
         
         # Automatically create a 20% discounted version
         try:
             discounted_invoice_id = db.create_discounted_invoice(invoice_id, 20.0)
-            print(f"✅ Discounted invoice created with ID: {discounted_invoice_id}")
+            print(f"Discounted invoice created with ID: {discounted_invoice_id}")
         except Exception as e:
-            print(f"❌ Error creating discounted invoice: {e}")
+            print(f"Error creating discounted invoice: {e}")
             # Continue even if discounted version fails
-            
+        
+        # Create PDF
+        print("Creating PDF...")
+        pdf_buffer = create_invoice_pdf(data, invoice_number)
+        print("PDF created successfully")
+        
+        # For Vercel, return the PDF directly as base64
+        import base64
+        pdf_base64 = base64.b64encode(pdf_buffer.getvalue()).decode('utf-8')
+        print(f"PDF encoded, size: {len(pdf_base64)} characters")
+        
+        return jsonify({
+            'success': True,
+            'invoice_number': invoice_number,
+            'pdf_data': pdf_base64
+        })
+        
     except Exception as e:
-        print(f"❌ Error saving invoice to database: {e}")
-        # Continue with PDF generation even if database save fails
-    
-    # Create PDF
-    pdf_buffer = create_invoice_pdf(data, invoice_number)
-    
-    # For Vercel, return the PDF directly as base64
-    import base64
-    pdf_base64 = base64.b64encode(pdf_buffer.getvalue()).decode('utf-8')
-    
-    return jsonify({
-        'success': True,
-        'invoice_number': invoice_number,
-        'pdf_data': pdf_base64
-    })
+        print(f"Error in invoice processing: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': f'Invoice processing error: {str(e)}'}), 500
 
 @app.route('/api/generate-discounted-invoice', methods=['POST'])
 def generate_discounted_invoice():
@@ -882,7 +987,7 @@ def create_invoice_pdf(data, invoice_number):
         web_icon = Image(web_path, width=0.2*inch, height=0.2*inch)
         contact_row.append([web_icon, Paragraph("www.eduwavespublishers.com", contact_footer_style)])
     else:
-        contact_row.append([Paragraph("🌐", contact_footer_style), Paragraph("www.eduwavespublishers.com", contact_footer_style)])
+        contact_row.append([Paragraph("Web", contact_footer_style), Paragraph("www.eduwavespublishers.com", contact_footer_style)])
     
     # Email
     gmail_path = "images/gmail-logo.png"
@@ -890,7 +995,7 @@ def create_invoice_pdf(data, invoice_number):
         gmail_icon = Image(gmail_path, width=0.2*inch, height=0.2*inch)
         contact_row.append([gmail_icon, Paragraph("eduwavespl@gmail.com", contact_footer_style)])
     else:
-        contact_row.append([Paragraph("✉️", contact_footer_style), Paragraph("eduwavespl@gmail.com", contact_footer_style)])
+        contact_row.append([Paragraph("Email", contact_footer_style), Paragraph("eduwavespl@gmail.com", contact_footer_style)])
     
     contact_data.append(contact_row)
     
@@ -936,6 +1041,7 @@ def create_invoice_pdf(data, invoice_number):
 
 def create_report_pdf(summary, invoices, start_date, end_date):
     """Create PDF report for invoice summary"""
+    print(f"Creating PDF with {len(invoices)} invoices")
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4, topMargin=0.5*inch, bottomMargin=0.5*inch)
     
@@ -1100,8 +1206,11 @@ def create_report_pdf(summary, invoices, start_date, end_date):
     story.append(footer)
     
     # Build PDF
+    print("Building PDF document...")
     doc.build(story)
+    print("PDF document built successfully")
     buffer.seek(0)
+    print(f"PDF buffer size: {len(buffer.getvalue())} bytes")
     return buffer
 
 def number_to_words(num):
@@ -1145,12 +1254,12 @@ if __name__ == '__main__':
     # Only run Flask dev server for local development
     # In production, Railway will use gunicorn with wsgi.py
     port = int(os.environ.get('PORT', 5000))
-    print(f"🚀 Starting EDUwaves Invoice Generator (LOCAL DEV) on port {port}")
-    print(f"📋 Available routes: /, /health, /api/books/search, /api/schools/search, /api/generate-invoice, /api/generate-discounted-invoice")
+    print(f"Starting EDUwaves Invoice Generator (LOCAL DEV) on port {port}")
+    print(f"Available routes: /, /health, /api/books/search, /api/schools/search, /api/generate-invoice, /api/generate-discounted-invoice")
     
     # Print all registered routes
     print_routes()
     
-    print(f"🌐 Local dev server starting on http://0.0.0.0:{port}")
-    print("⚠️  WARNING: This is a development server. Use WSGI for production!")
+    print(f"Local dev server starting on http://0.0.0.0:{port}")
+    print("WARNING: This is a development server. Use WSGI for production!")
     app.run(host='0.0.0.0', port=port, debug=True)

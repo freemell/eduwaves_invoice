@@ -649,6 +649,28 @@
         }
 
         // Clear form function
+        function updateTotals() {
+            let totalQuantity = 0;
+            let grossTotal = 0;
+            
+            selectedItems.forEach(item => {
+                totalQuantity += item.quantity;
+                grossTotal += item.quantity * item.price;
+            });
+            
+            // Update totals display
+            document.getElementById('totalQuantity').textContent = totalQuantity;
+            document.getElementById('grossTotal').textContent = `N${grossTotal.toLocaleString()}`;
+            
+            // Calculate discount
+            const discountPercent = parseFloat(document.getElementById('discountPercent').value) || 0;
+            const discountAmount = grossTotal * (discountPercent / 100);
+            const netTotal = grossTotal - discountAmount;
+            
+            document.getElementById('discountAmount').textContent = `N${discountAmount.toLocaleString()}`;
+            document.getElementById('netTotal').textContent = `N${netTotal.toLocaleString()}`;
+        }
+
         function clearForm() {
             // Clear selected items
             selectedItems = [];
@@ -861,6 +883,8 @@
         // Form submission
         document.getElementById('invoiceForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log('Form submission triggered');
+            console.log('Selected items:', selectedItems);
             
             if (selectedItems.length === 0) {
                 alert('Please add at least one book to the invoice.');
@@ -884,6 +908,9 @@
             
             // Show loading
             document.getElementById('loadingIndicator').style.display = 'block';
+            
+            console.log('Sending request to /api/generate-invoice');
+            console.log('Form data:', formData);
             
             fetch('/api/generate-invoice', {
                 method: 'POST',

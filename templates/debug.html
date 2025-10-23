@@ -22,13 +22,13 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-header bg-success text-white">
-                                        <h6>Step 1: Import Schools</h6>
+                                        <h6>Option 1: Import Schools</h6>
                                     </div>
                                     <div class="card-body">
-                                        <p>Import all schools from your CSV file:</p>
+                                        <p>Import all schools from CSV:</p>
                                         <button class="btn btn-success" onclick="importSchools()">
                                             <i class="fas fa-upload"></i> Import Schools
                                         </button>
@@ -37,10 +37,25 @@
                                 </div>
                             </div>
                             
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header bg-warning text-white">
+                                        <h6>Option 2: Add Sample Data</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>Add test schools and invoice:</p>
+                                        <button class="btn btn-warning" onclick="addSampleData()">
+                                            <i class="fas fa-plus"></i> Add Sample Data
+                                        </button>
+                                        <div id="sampleResult" class="mt-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-header bg-info text-white">
-                                        <h6>Step 2: Check Status</h6>
+                                        <h6>Check Status</h6>
                                     </div>
                                     <div class="card-body">
                                         <p>Check database status:</p>
@@ -96,6 +111,26 @@
             });
         }
 
+        function addSampleData() {
+            const resultDiv = document.getElementById('sampleResult');
+            resultDiv.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div> Adding...';
+            
+            fetch('/api/database/add-sample-data', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    resultDiv.innerHTML = `<div class="alert alert-success">✅ ${data.message}</div>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="alert alert-danger">❌ ${data.error}</div>`;
+                }
+            })
+            .catch(error => {
+                resultDiv.innerHTML = `<div class="alert alert-danger">❌ Error: ${error}</div>`;
+            });
+        }
+
         function checkStatus() {
             const resultDiv = document.getElementById('statusResult');
             resultDiv.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div> Checking...';
@@ -122,3 +157,4 @@
     </script>
 </body>
 </html>
+

@@ -91,7 +91,8 @@ requests==2.32.5
 | Custom Domain | ✅ Easy | ✅ Easy |
 
 ## 📊 Railway Pricing
-
+railway team apoenl d heue noiee
+enen aeinn
 ### Free Tier
 - $5 credit monthly
 - 512MB RAM
